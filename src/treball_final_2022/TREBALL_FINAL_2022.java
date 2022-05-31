@@ -5,7 +5,7 @@ package treball_final_2022;
  * @author Carlos Lozano, Marc Llobera
  */
 public class TREBALL_FINAL_2022 {
-
+//14 champions
     boolean acabat;
     private final int numJugadors = 4;
     Jugador[] jugadors = new Jugador[4];
