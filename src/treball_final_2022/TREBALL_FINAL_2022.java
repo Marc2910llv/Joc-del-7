@@ -8,6 +8,7 @@ public class TREBALL_FINAL_2022 {
 
     boolean acabat;
     private final int numJugadors = 4;
+    private final int numCartes = 13;
     Jugador[] jugadors = new Jugador[4];
 
     public static void main(String[] args) {
@@ -17,20 +18,23 @@ public class TREBALL_FINAL_2022 {
     private void inici() {
         acabat = false;
         Baralla bar = new Baralla();
-        System.out.println(bar.toString() + "\n");
+        System.out.println("BARALLA FORA MESCLAR: ");
+        System.out.println(bar.toString()+"\n");
         bar.mescla();
-        System.out.println(bar.toString());
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < numJugadors; i++) {
             jugadors[i] = new Jugador(i + 1);
-            for (int k = 0; k < 13; k++) {
+            for (int k = 0; k < numCartes; k++) {
                 RepartirCartes(jugadors[i], bar);
             }
         }
-        for (int k = 0; k < 4; k++) {
-            System.out.println(jugadors[k].toString());
+        //imprimim els jugadors amb les cartes corresponents
+        for (int i = 0; i < numJugadors; i++) {
+            System.out.println(jugadors[i].toString());
         }
         Tauler t = new Tauler();
+        System.out.println("");
         System.out.println(t.toString());
+        System.out.println("");
         while (!acabat) {
             for (int k = 0; (k < 4) && !acabat; k++) {
                 jugadors[k].treureCarta(t);

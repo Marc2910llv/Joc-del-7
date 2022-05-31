@@ -48,7 +48,7 @@ public class Jugador {
 
     @Override
     public String toString() {
-        String s = "Jugador " + nombre + ": ";
+        String s = "Jug " + nombre + ": ";
         for (int i = 0; i < cartasAsignadas.size(); i++) {
             s += cartasAsignadas.get(i).toString() + " ";
 

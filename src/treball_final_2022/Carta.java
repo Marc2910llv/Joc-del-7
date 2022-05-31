@@ -24,17 +24,17 @@ public class Carta {
     public String toString() {
         if (num <= 10) {
             if (num == 1) {
-                return "[Carta: As, Pal:" + pal + "]";
+                return "[As,"+pal+ "]";
             }
-            return "[Carta: " + num + ", Pal:" + pal + "]";
+            return "["+num+","+pal+"]";
         } else {
             switch (num) {
                 case 11:
-                    return "[Carta: J, Pal:" + pal + "]";
+                    return "[J,"+pal+"]";
                 case 12:
-                    return "[Carta: Q, Pal:" + pal + "]";
+                    return "[Q,"+pal+"]";
                 case 13:
-                    return "[Carta: K, Pal:" + pal + "]";
+                    return "[K,"+pal+"]";
             }
         }
         return "ERROR";
