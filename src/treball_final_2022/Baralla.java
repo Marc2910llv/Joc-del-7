@@ -14,7 +14,7 @@ import java.util.Random;
 public class Baralla {
 
     public static final int MAXCARTESPERPAL = 13;
-    public static final int MAXCARTES = MAXCARTESPERPAL * 4; // 48 Nombre màxim de cartes 13 cartes * 4 Pals
+    public static final int MAXCARTES = MAXCARTESPERPAL * 4; // 52 Nombre màxim de cartes 13 cartes * 4 Pals
 
     private final Carta[] b;
     private int n; // Nombre de cartes de la baralla
@@ -51,7 +51,7 @@ public class Baralla {
         return s;
     }
 
-    public void mescla() {
+    public void mescla() {//Fisher-Yates
         Random rnd = new Random();
         for (int i = MAXCARTES - 1; i > 0; i--) {
             int pos = rnd.nextInt(i + 1);

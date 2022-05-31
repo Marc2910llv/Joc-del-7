@@ -59,15 +59,25 @@ public class Tauler {
         }
         columna = carta.getNum() - 1;
 
-        if (columna == 0) {
-            return (tauler[fila][columna + 1].getNum() == 2);
-        } else {
-            if (columna == 12) {
-                return (tauler[fila][columna - 1].getNum() == 12);
-            } else {
-                return (tauler[fila][columna + 1].getNum() < carta.getNum()) || (tauler[fila][columna - 1].getNum() > carta.getNum()) || (carta.getNum() == 7);
-            }
+        if (carta.getNum() == 7) {
+            return true;
         }
+        if (columna == 0) {
+            if (tauler[fila][columna + 1] != null) {
+                return (tauler[fila][columna + 1].getNum() == 2);
+            }
+            return false;
+        } else if (columna == 12) {
+            if (tauler[fila][columna - 1] != null) {
+                return (tauler[fila][columna - 1].getNum() == 12);
+            }
+            return false;
+        } else if (tauler[fila][columna - 1] != null) {
+            return tauler[fila][columna - 1].getNum() < carta.getNum();
+        } else if (tauler[fila][columna + 1] != null) {
+            return tauler[fila][columna + 1].getNum() > carta.getNum();
+        }
+        return false;
     }
 
     @Override

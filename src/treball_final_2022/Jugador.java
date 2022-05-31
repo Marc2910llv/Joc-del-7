@@ -18,7 +18,8 @@ public class Jugador {
     public final ArrayList<Carta> cartasAsignadas;
 
     //CONSTRUCTOR
-    public Jugador() {
+    public Jugador(int nombre) {
+        this.nombre = nombre;
         cartasAsignadas = new ArrayList<>();
     }
 

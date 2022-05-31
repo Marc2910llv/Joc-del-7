@@ -5,7 +5,7 @@ package treball_final_2022;
  * @author Carlos Lozano, Marc Llobera
  */
 public class TREBALL_FINAL_2022 {
-//14 champions
+
     boolean acabat;
     private final int numJugadors = 4;
     Jugador[] jugadors = new Jugador[4];
@@ -20,8 +20,11 @@ public class TREBALL_FINAL_2022 {
         System.out.println(bar.toString() + "\n");
         bar.mescla();
         System.out.println(bar.toString());
-        for (int k = 0; k < 48; k++) {
-            RepartirCartes(jugadors[k % numJugadors], bar);
+        for (int i = 0; i < 4; i++) {
+            jugadors[i] = new Jugador(i + 1);
+            for (int k = 0; k < 13; k++) {
+                RepartirCartes(jugadors[i], bar);
+            }
         }
         for (int k = 0; k < 4; k++) {
             System.out.println(jugadors[k].toString());
