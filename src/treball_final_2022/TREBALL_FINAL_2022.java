@@ -34,7 +34,9 @@ public class TREBALL_FINAL_2022 {
                 if (jugadors[k].getNumCartas() == 0) {
                     acabat = true;
                 }
+                System.out.println(jugadors[k].toString());
             }
+            System.out.println(t.toString());
         }
     }
 
