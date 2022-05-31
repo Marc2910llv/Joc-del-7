@@ -10,5 +10,5 @@ package treball_final_2022;
  * @author carlos
  */
 public enum Pal {
- CORS, DIAMANTS, TREBOLS,PIQUES;
+    CORS, DIAMANTS, TREBOLS, PIQUES;
 }

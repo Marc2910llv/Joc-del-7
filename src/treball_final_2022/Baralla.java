@@ -16,7 +16,7 @@ public class Baralla {
     public static final int MAXCARTESPERPAL = 13;
     public static final int MAXCARTES = MAXCARTESPERPAL * 4; // 48 Nombre màxim de cartes 13 cartes * 4 Pals
 
-    private Carta[] b;
+    private final Carta[] b;
     private int n; // Nombre de cartes de la baralla
 
     public static class NohihaCartes extends Exception {
@@ -26,14 +26,14 @@ public class Baralla {
         }
     }
 
-    // Constructor
+    // CONSTRUCTOR
     public Baralla() {
         b = new Carta[MAXCARTES];
         n = MAXCARTES;
         int index = 0;
         for (Pal pal : Pal.values()) {
-            for (int i = 1; i <= 12; i++) {
-                b[index] = new Carta(pal, i);
+            for (int i = 0; i < MAXCARTESPERPAL; i++) {
+                b[index] = new Carta(pal, i + 1);
                 index++;
             }
         }
@@ -52,7 +52,6 @@ public class Baralla {
     }
 
     public void mescla() {
-        // la implementació Durstenfeld de l'algorisme Fisher-Yates
         Random rnd = new Random();
         for (int i = MAXCARTES - 1; i > 0; i--) {
             int pos = rnd.nextInt(i + 1);

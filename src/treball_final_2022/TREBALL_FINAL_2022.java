@@ -6,33 +6,41 @@ package treball_final_2022;
  */
 public class TREBALL_FINAL_2022 {
 
-    int numJugadors = 4;
-    Jugador aleatori = new Jugador();
-    Jugador[] jugadors = new Jugador[3];
+    boolean acabat;
+    private final int numJugadors = 4;
+    Jugador[] jugadors = new Jugador[4];
 
     public static void main(String[] args) {
-        new TREBALL_FINAL_2022().inicio();
+        new TREBALL_FINAL_2022().inici();
     }
 
-    private void iniciarJugadors() {
-
-    }
-
-    private void inicio() {
-        //repartirCartas entre los 4 jugadores
-        //mezclar cada baraja de cdaa uno
-        Baralla bar = new Baralla(); //Instanciamos baraja
-        System.out.println(bar.toString() + "\n"); //Visualizamos baraja
+    private void inici() {
+        acabat = false;
+        Baralla bar = new Baralla();
+        System.out.println(bar.toString() + "\n");
         bar.mescla();
-        System.out.println(bar.toString());//Visualizamos baraja mezclada
+        System.out.println(bar.toString());
         for (int k = 0; k < 48; k++) {
-            RepartirCartas(jugadors[k % numJugadors], bar); //BUCLE en el que llamamos método Repartir Cartas para cada jugador ciclicamente
+            RepartirCartes(jugadors[k % numJugadors], bar);
+        }
+        for (int k = 0; k < 4; k++) {
+            System.out.println(jugadors[k].toString());
+        }
+        Tauler t = new Tauler();
+        System.out.println(t.toString());
+        while (!acabat) {
+            for (int k = 0; (k < 4) && !acabat; k++) {
+                jugadors[k].treureCarta(t);
+                if (jugadors[k].getNumCartas() == 0) {
+                    acabat = true;
+                }
+            }
         }
     }
 
-    private void RepartirCartas(Jugador jug, Baralla bara) {
+    private void RepartirCartes(Jugador jug, Baralla bara) {
         try {
-            jug.AsignarCarta(bara.agafaCarta());
+            jug.asignarCarta(bara.agafaCarta());
         } catch (Baralla.NohihaCartes ex) {
             System.out.println("NO HAY MÁS CARTAS");
         }

@@ -14,13 +14,12 @@ public class Carta {
     private final Pal pal;
     private final int num;
 
-    // Constructor
+    // CONSTRUCTOR
     Carta(Pal pal, int i) {
         this.pal = pal;
         this.num = i;
     }
 
-    // Consultors
     @Override
     public String toString() {
         if (num <= 10) {
