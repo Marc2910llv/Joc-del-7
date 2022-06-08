@@ -1,16 +1,17 @@
 package treball_final_2022;
 
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.JTextField;
 
 /**
  *
@@ -24,14 +25,11 @@ public class TREBALL_FINAL_2022 extends JFrame {
     private Container contenidor;
 
     public static void main(String[] args) {
-        new TREBALL_FINAL_2022().inici();
+        new TREBALL_FINAL_2022().interfici();
     }
 
     private void interfici() {
         setTitle("Pràctica Prog II - Joc del 7");
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setUndecorated(true);
-        setLocationRelativeTo(null);
         setSize(800, 800);
         setDefaultCloseOperation(TREBALL_FINAL_2022.EXIT_ON_CLOSE);
         contenidor = getContentPane();
@@ -39,63 +37,86 @@ public class TREBALL_FINAL_2022 extends JFrame {
         /*----------------------------------------------------------------------
         --TABLERO DE JUEGO
         ----------------------------------------------------------------------*/
+        JPanel tablero = new JPanel();
         //JUGADORS IA
-        JFrame[] cartesJugador = new JFrame[3];
-        ImatgeCarta infoJugadors = new ImatgeCarta();
-        try {
-            infoJugadors.image = ImageIO.read(new File("Cartes/card_back_blue.png"));
-        } catch (IOException ex) {
-            Logger.getLogger(TREBALL_FINAL_2022.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        for (JFrame cartesJugador1 : cartesJugador) {
-            cartesJugador1.setSize(50, 80);
-            cartesJugador1.setContentPane(infoJugadors);
-        }
+        JLabel cartesJugadors1 = new JLabel();
+        JLabel cartesJugadors2 = new JLabel();
+        JLabel cartesJugadors3 = new JLabel();
+
+        JTextField jugador3 = new JTextField("13");
+        cartesJugadors3.setIcon(new ImageIcon("Cartes/card_back_blue.png"));
 
         //BARALLA
         //Ordre: CORS, DIAMANTS, TREBOLS, PIQUES
-        JPanel taulerBaralla = new JPanel();
-        taulerBaralla.setSize(800, 600);
+        JLabel taulerBaralla = new JLabel();
         taulerBaralla.setLayout(new GridLayout(4, 13));
 
         String[] pals = {"hearts", "diamonds", "clubs", "spades"};
-        ImatgeCarta[][] imatgesBaralla = new ImatgeCarta[4][13];
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 13; j++) {
-                try {
-                    imatgesBaralla[i][j].image = ImageIO.read(new File("Cartes/" + j + "_of_" + pals[i] + ".png"));
-                    taulerBaralla.add(imatgesBaralla[i][j]);
-                } catch (IOException ex) {
-                    Logger.getLogger(TREBALL_FINAL_2022.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                taulerBaralla.setIcon(new ImageIcon("Cartes/" + j + "_of_" + pals[i] + ".png"));
             }
         }
 
         //JUGADOR USUARI
-        JPanel barallaUsuari = new JPanel();
-        taulerBaralla.setSize(800, 50);
-        taulerBaralla.setLayout(new GridLayout(1, 14));
+        JLabel barallaUsuari = new JLabel();
 
-        JLabel cartesRestantsUsuari = new JLabel();
-        cartesRestantsUsuari.setFont(new Font("SansSerif", Font.PLAIN, 30));
-        cartesRestantsUsuari.setText("13");
-        barallaUsuari.add(cartesRestantsUsuari);
+        barallaUsuari.setFont(new Font("SansSerif", Font.PLAIN, 30));
+        barallaUsuari.setText("13");
 
-        ImatgeCarta[] imatgesBarallaUsuari = new ImatgeCarta[13];
         for (int i = 0; i < 13; i++) {
-            barallaUsuari.add(imatgesBarallaUsuari[i]);
+            barallaUsuari.setIcon(new ImageIcon("Cartes/card_back_blue.png"));
         }
 
         /*----------------------------------------------------------------------
         --MENU INFERIOR
         ----------------------------------------------------------------------*/
+        JPanel menuInferior = new JPanel();
+        menuInferior.setLayout(new GridLayout(2, 1));
+        JPanel menuInferior1 = new JPanel();
+        menuInferior1.setLayout(new GridLayout(1, 3));
+
+        JButton mescla = new JButton("Mescla");
+        menuInferior1.add(mescla);
+        JButton juga = new JButton("Juga");
+        menuInferior1.add(juga);
+        JButton reinicia = new JButton("Reinicia");
+        menuInferior1.add(reinicia);
+
+        JTextField texteMissatge = new JTextField();
+        texteMissatge.setText("");
+
+        menuInferior.add(menuInferior1);
+        menuInferior.add(texteMissatge);
+
+        /*----------------------------------------------------------------------
+        --DISTRIBUCIÓ
+        ----------------------------------------------------------------------*/
+        JSplitPane separacio_IA_baralla = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        JSplitPane separacio_baralla_usuari = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        JSplitPane separacio_usuari_menu = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+
+        separacio_IA_baralla.setTopComponent(IA);
+        separacio_IA_baralla.setBottomComponent(taulerBaralla);
+
+        separacio_baralla_usuari.setTopComponent(taulerBaralla);
+        separacio_baralla_usuari.setBottomComponent(barallaUsuari);
+
+        separacio_usuari_menu.setTopComponent(barallaUsuari);
+        separacio_usuari_menu.setBottomComponent(menuInferior);
+
+        contenidor.add(separacio_IA_baralla, BorderLayout.NORTH);
+        contenidor.add(separacio_baralla_usuari, BorderLayout.CENTER);
+        contenidor.add(separacio_usuari_menu, BorderLayout.SOUTH);
+
+        setVisible(true);
     }
 
     private void inici() {
         acabat = false;
         Baralla bar = new Baralla();
         System.out.println("BARALLA FORA MESCLAR: ");
-        System.out.println(bar.toString()+"\n");
+        System.out.println(bar.toString() + "\n");
         bar.mescla();
         for (int i = 0; i < 4; i++) {
             jugadors[i] = new Jugador(i + 1);
@@ -129,6 +150,12 @@ public class TREBALL_FINAL_2022 extends JFrame {
         } catch (Baralla.NohihaCartes ex) {
             System.out.println("NO HAY MÁS CARTAS");
         }
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponents(g);
+
     }
 
 }
