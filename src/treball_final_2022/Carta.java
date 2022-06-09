@@ -5,46 +5,28 @@
  */
 package treball_final_2022;
 
+import java.awt.FlowLayout;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
 /**
  *
  * @author Carlos Lozano, Marc Llobera
  */
-public class Carta {
+public class Carta extends JLabel {
 
-    private final Pal pal;
-    private final int num;
+    JLabel carta;
 
     // CONSTRUCTOR
-    Carta(Pal pal, int i) {
-        this.pal = pal;
-        this.num = i;
+    public Carta( ) {
+        carta = new JLabel();
     }
 
-    @Override
-    public String toString() {
-        if (num <= 10) {
-            if (num == 1) {
-                return "[As,"+pal+ "]";
-            }
-            return "["+num+","+pal+"]";
-        } else {
-            switch (num) {
-                case 11:
-                    return "[J,"+pal+"]";
-                case 12:
-                    return "[Q,"+pal+"]";
-                case 13:
-                    return "[K,"+pal+"]";
-            }
-        }
-        return "ERROR";
+    public JLabel crearCarta(Image im) {
+        carta.setIcon(new ImageIcon(im));
+        carta.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 5));
+        return carta;
     }
 
-    public int getNum() {
-        return num;
-    }
-
-    public Pal getPal() {
-        return pal;
-    }
 }
