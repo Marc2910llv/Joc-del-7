@@ -15,28 +15,25 @@ import javax.swing.border.Border;
  * @author carlo
  */
 public class RoundedBorder implements Border {
-     private final int radius;
 
+    private final int radius;
 
     RoundedBorder(int radius) {
         this.radius = radius;
     }
 
-
-     @Override
+    @Override
     public Insets getBorderInsets(Component c) {
-        return new Insets(3, this.radius+1,3, this.radius+1);
+        return new Insets(0, this.radius, 3, this.radius);
     }
 
-
-     @Override
+    @Override
     public boolean isBorderOpaque() {
         return true;
     }
 
-
-     @Override
+    @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        g.drawRoundRect(x, y, width-1, height-1, radius, radius);
+        g.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
     }
 }

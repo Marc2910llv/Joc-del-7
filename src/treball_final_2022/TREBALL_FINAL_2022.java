@@ -2,28 +2,26 @@ package treball_final_2022;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.geom.Rectangle2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.JTextPane;
 
 /**
  *
@@ -31,20 +29,27 @@ import javax.swing.JTextField;
  */
 public class TREBALL_FINAL_2022 extends JFrame {
 
-    boolean acabat;
-    private final int numCartes = 13;
-    Jugador[] jugadors = new Jugador[4];
     private Container contenidor;
-    panelBaraja tablero = new panelBaraja();
+    private final Color colorTauler = new Color(0, 110, 0);
+    private int[] tamanyCartes = {65, 100};
+
+    private boolean acabat;
+    private final int numCartes = 13;
+    private final Jugador[] jugadors = new Jugador[4];
 
     public static void main(String[] args) {
-        new TREBALL_FINAL_2022().interfici();
+        try {
+            new TREBALL_FINAL_2022().interfici();
+        } catch (IOException ex) {
+            Logger.getLogger(TREBALL_FINAL_2022.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    private void interfici() {
+    private void interfici() throws IOException {
         setTitle("Pràctica Prog II - Joc del 7");
-        setSize(800, 800);
-        setResizable(false);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //setSize(600, 600);
+        setResizable(true);
         setDefaultCloseOperation(TREBALL_FINAL_2022.EXIT_ON_CLOSE);
         contenidor = getContentPane();
 
@@ -52,12 +57,63 @@ public class TREBALL_FINAL_2022 extends JFrame {
         --TABLERO DE JUEGO
         ----------------------------------------------------------------------*/
         //JUGADORS IA
+        BufferedImage bufferedImage = ImageIO.read(new File("Cartes/card_back_blue.png"));
+        Image image = bufferedImage.getScaledInstance(tamanyCartes[0], tamanyCartes[1], Image.SCALE_DEFAULT);
+        //iniciam els contenidors de les baralles dels jugadors IA
         JLabel cartesJugadors1 = new JLabel();
+        cartesJugadors1.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 15));
         JLabel cartesJugadors2 = new JLabel();
+        cartesJugadors2.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 15));
         JLabel cartesJugadors3 = new JLabel();
+        cartesJugadors3.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 15));
 
-        JTextField jugador3 = new JTextField("13");
-        cartesJugadors3.setIcon(new ImageIcon("Cartes/card_back_blue.png"));
+//        JTextArea text_Jugador1 = new JTextArea("0");
+//        text_Jugador1.setForeground(Color.WHITE);
+//        text_Jugador1.setFont(new Font("Arial", Font.PLAIN, 55));
+//        text_Jugador1.setOpaque(false);
+//        text_Jugador1.setEditable(false);
+//        cartesJugadors1.setIcon(new ImageIcon(image));
+        cartesJugadors1.setForeground(Color.WHITE);
+        cartesJugadors1.setBackground(new Color(0, 82, 0));
+        cartesJugadors1.setText(" 0 ");
+        cartesJugadors1.setFont(new Font("Arial", Font.PLAIN, 55));
+        cartesJugadors1.setOpaque(true);
+        //cartesJugadors1.add(text_Jugador1);
+
+//        JTextArea text_Jugador2 = new JTextArea("0");
+//        text_Jugador2.setForeground(Color.WHITE);
+//        text_Jugador2.setFont(new Font("Arial", Font.PLAIN, 55));
+//        text_Jugador2.setOpaque(false);
+//        text_Jugador2.setEditable(false);
+//        cartesJugadors2.setIcon(new ImageIcon(image));
+        cartesJugadors2.setForeground(Color.WHITE);
+        cartesJugadors2.setBackground(new Color(0, 82, 0));
+        cartesJugadors2.setText(" 0 ");
+        cartesJugadors2.setFont(new Font("Arial", Font.PLAIN, 55));
+        cartesJugadors2.setOpaque(true);
+        //cartesJugadors2.add(text_Jugador2);
+
+//        JTextArea text_Jugador3 = new JTextArea("0");
+//        text_Jugador3.setForeground(Color.WHITE);
+//        text_Jugador3.setFont(new Font("Arial", Font.PLAIN, 55));
+//        text_Jugador3.setOpaque(false);
+//        text_Jugador3.setEditable(false);
+//        cartesJugadors3.setIcon(new ImageIcon(image));
+        cartesJugadors3.setForeground(Color.WHITE);
+        cartesJugadors3.setBackground(new Color(0, 82, 0));
+        cartesJugadors3.setText(" 0 ");
+        cartesJugadors3.setFont(new Font("Arial", Font.PLAIN, 55));
+        cartesJugadors3.setOpaque(true);
+        //cartesJugadors3.add(text_Jugador3);
+
+        //agrupam les baralles dins un panell
+        JPanel jugadorsIA = new JPanel();
+        jugadorsIA.setBackground(colorTauler);
+        jugadorsIA.setLayout(new FlowLayout(FlowLayout.CENTER, 200, 5));
+
+        jugadorsIA.add(cartesJugadors1);
+        jugadorsIA.add(cartesJugadors2);
+        jugadorsIA.add(cartesJugadors3);
 
         //BARALLA
         //Ordre: CORS, DIAMANTS, TREBOLS, PIQUES
@@ -81,12 +137,17 @@ public class TREBALL_FINAL_2022 extends JFrame {
             barallaUsuari.setIcon(new ImageIcon("Cartes/card_back_blue.png"));
         }
 
+        JPanel tauler = new JPanel();
+        tauler.setBackground(colorTauler);
+        tauler.setLayout(new GridLayout(1, 3));
+
+        tauler.add(jugadorsIA);
+
         /*----------------------------------------------------------------------
         --MENU INFERIOR
         ----------------------------------------------------------------------*/
-      
         JPanel menuBotons = new JPanel();
-        menuBotons.setLayout(new FlowLayout(FlowLayout.CENTER,10,5));
+        menuBotons.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 3));
         JButton mescla = new JButton(" Mescla ");
         mescla.setBorder(new RoundedBorder(6));
         mescla.setSelected(false);
@@ -97,23 +158,22 @@ public class TREBALL_FINAL_2022 extends JFrame {
         JButton reinicia = new JButton("Reinicia");
         reinicia.setBorder(new RoundedBorder(6));
         menuBotons.add(reinicia);
-        
+
         JTextArea texteMissatge = new JTextArea();
         texteMissatge.setEditable(false);
         texteMissatge.setText("             puto");
-        
+
 
         /*----------------------------------------------------------------------
         --DISTRIBUCIÓ
         ----------------------------------------------------------------------*/
         JSplitPane separadorTablero = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         JSplitPane separadorMenu = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        
-        separadorTablero.setTopComponent(tablero);
+
+        separadorTablero.setTopComponent(tauler);
         separadorTablero.setBottomComponent(menuBotons);
         separadorMenu.setTopComponent(menuBotons);
         separadorMenu.setBottomComponent(texteMissatge);
-        
 
         contenidor.add(separadorTablero, BorderLayout.CENTER);
         contenidor.add(separadorMenu, BorderLayout.SOUTH);
@@ -160,27 +220,5 @@ public class TREBALL_FINAL_2022 extends JFrame {
             System.out.println("NO HAY MÁS CARTAS");
         }
     }
-   
-    
-    private class panelBaraja extends JPanel {
-
-        public panelBaraja() {
-
-        }
-        
-         @Override
-        public void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            //PINTAR TABLERO
-            //hacemos un rectangulo relleno que ocupe todo el JPanel naranja
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setColor(new Color(0,110,0));
-            Rectangle2D rectangulo = new Rectangle2D.Double(0, 0, 800, 800);
-            g.drawRect(0, 0, 55, 80);
-            g2d.fill(rectangulo);
-        }
-    }
-    
-   
 
 }
