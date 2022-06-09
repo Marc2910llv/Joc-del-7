@@ -1,16 +1,28 @@
 package treball_final_2022;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.geom.Rectangle2D;
+import java.io.File;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
@@ -23,6 +35,7 @@ public class TREBALL_FINAL_2022 extends JFrame {
     private final int numCartes = 13;
     Jugador[] jugadors = new Jugador[4];
     private Container contenidor;
+    panelBaraja tablero = new panelBaraja();
 
     public static void main(String[] args) {
         new TREBALL_FINAL_2022().interfici();
@@ -31,13 +44,13 @@ public class TREBALL_FINAL_2022 extends JFrame {
     private void interfici() {
         setTitle("Pràctica Prog II - Joc del 7");
         setSize(800, 800);
+        setResizable(false);
         setDefaultCloseOperation(TREBALL_FINAL_2022.EXIT_ON_CLOSE);
         contenidor = getContentPane();
 
         /*----------------------------------------------------------------------
         --TABLERO DE JUEGO
         ----------------------------------------------------------------------*/
-        JPanel tablero = new JPanel();
         //JUGADORS IA
         JLabel cartesJugadors1 = new JLabel();
         JLabel cartesJugadors2 = new JLabel();
@@ -71,43 +84,39 @@ public class TREBALL_FINAL_2022 extends JFrame {
         /*----------------------------------------------------------------------
         --MENU INFERIOR
         ----------------------------------------------------------------------*/
-        JPanel menuInferior = new JPanel();
-        menuInferior.setLayout(new GridLayout(2, 1));
-        JPanel menuInferior1 = new JPanel();
-        menuInferior1.setLayout(new GridLayout(1, 3));
-
-        JButton mescla = new JButton("Mescla");
-        menuInferior1.add(mescla);
-        JButton juga = new JButton("Juga");
-        menuInferior1.add(juga);
+      
+        JPanel menuBotons = new JPanel();
+        menuBotons.setLayout(new FlowLayout(FlowLayout.CENTER,10,5));
+        JButton mescla = new JButton(" Mescla ");
+        mescla.setBorder(new RoundedBorder(6));
+        mescla.setSelected(false);
+        menuBotons.add(mescla);
+        JButton juga = new JButton("  Juga  ");
+        juga.setBorder(new RoundedBorder(6));
+        menuBotons.add(juga);
         JButton reinicia = new JButton("Reinicia");
-        menuInferior1.add(reinicia);
-
-        JTextField texteMissatge = new JTextField();
-        texteMissatge.setText("");
-
-        menuInferior.add(menuInferior1);
-        menuInferior.add(texteMissatge);
+        reinicia.setBorder(new RoundedBorder(6));
+        menuBotons.add(reinicia);
+        
+        JTextArea texteMissatge = new JTextArea();
+        texteMissatge.setEditable(false);
+        texteMissatge.setText("             puto");
+        
 
         /*----------------------------------------------------------------------
         --DISTRIBUCIÓ
         ----------------------------------------------------------------------*/
-        JSplitPane separacio_IA_baralla = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        JSplitPane separacio_baralla_usuari = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        JSplitPane separacio_usuari_menu = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        JSplitPane separadorTablero = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        JSplitPane separadorMenu = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        
+        separadorTablero.setTopComponent(tablero);
+        separadorTablero.setBottomComponent(menuBotons);
+        separadorMenu.setTopComponent(menuBotons);
+        separadorMenu.setBottomComponent(texteMissatge);
+        
 
-        separacio_IA_baralla.setTopComponent(IA);
-        separacio_IA_baralla.setBottomComponent(taulerBaralla);
-
-        separacio_baralla_usuari.setTopComponent(taulerBaralla);
-        separacio_baralla_usuari.setBottomComponent(barallaUsuari);
-
-        separacio_usuari_menu.setTopComponent(barallaUsuari);
-        separacio_usuari_menu.setBottomComponent(menuInferior);
-
-        contenidor.add(separacio_IA_baralla, BorderLayout.NORTH);
-        contenidor.add(separacio_baralla_usuari, BorderLayout.CENTER);
-        contenidor.add(separacio_usuari_menu, BorderLayout.SOUTH);
+        contenidor.add(separadorTablero, BorderLayout.CENTER);
+        contenidor.add(separadorMenu, BorderLayout.SOUTH);
 
         setVisible(true);
     }
@@ -151,11 +160,27 @@ public class TREBALL_FINAL_2022 extends JFrame {
             System.out.println("NO HAY MÁS CARTAS");
         }
     }
+   
+    
+    private class panelBaraja extends JPanel {
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponents(g);
+        public panelBaraja() {
 
+        }
+        
+         @Override
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            //PINTAR TABLERO
+            //hacemos un rectangulo relleno que ocupe todo el JPanel naranja
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setColor(new Color(0,110,0));
+            Rectangle2D rectangulo = new Rectangle2D.Double(0, 0, 800, 800);
+            g.drawRect(0, 0, 55, 80);
+            g2d.fill(rectangulo);
+        }
     }
+    
+   
 
 }
