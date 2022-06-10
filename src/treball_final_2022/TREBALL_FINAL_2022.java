@@ -50,8 +50,8 @@ public class TREBALL_FINAL_2022 extends JFrame {
 
     private void interfici() throws IOException {
         setTitle("Pràctica Prog II - Joc del 7");
-        // setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setSize(1000, 1000);
+        //setExtendedState(JFrame.MAXIMIZED_BOTH);
+         setSize(1000, 650);
         setResizable(false);
         setDefaultCloseOperation(TREBALL_FINAL_2022.EXIT_ON_CLOSE);
         contenedor = getContentPane();
@@ -59,25 +59,6 @@ public class TREBALL_FINAL_2022 extends JFrame {
         /*----------------------------------------------------------------------
         --TABLERO DE JUEGO
         ----------------------------------------------------------------------*/
-        //BARALLA
-        //Ordre: CORS, DIAMANTS, TREBOLS, PIQUES
-        BufferedImage buf;
-        Image imagge;
-        Carta[][] cartas = new Carta[4][13];
-        String[] pals = {"hearts", "diamonds", "clubs", "spades"};
-        JPanel TaulerBaralla = new JPanel(); 
-        TaulerBaralla.setBackground(colorTauler);
-        TaulerBaralla.setLayout(new GridLayout(4, 13));
-        //rellenamos tablero con cartas;
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 13; j++) {
-                cartas[i][j] = new Carta();
-                buf = ImageIO.read(new File("Cartes/" + (j + 1) + "_of_" + pals[i] + ".png")); //
-                imagge = buf.getScaledInstance(tamanyCartes[0], tamanyCartes[1], Image.SCALE_DEFAULT);
-                TaulerBaralla.add(cartas[i][j].crearCarta(imagge));
-            }
-        }
-
         //JUGADORS IA
         BufferedImage bufferedImage = ImageIO.read(new File("Cartes/card_back_blue.png"));
         Image image = bufferedImage.getScaledInstance(tamanyCartes[0], tamanyCartes[1], Image.SCALE_DEFAULT);
@@ -89,7 +70,7 @@ public class TREBALL_FINAL_2022 extends JFrame {
         JLabel cartesJugadors3 = new JLabel();
         cartesJugadors3.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 15));
 //
-//        //      JTextArea text_Jugador1 = new JTextArea("0");
+//        //JTextArea text_Jugador1 = new JTextArea("0");
 ////       text_Jugador1.setForeground(Color.WHITE);
 ////        text_Jugador1.setFont(new Font("Arial", Font.PLAIN, 55));
 ////       text_Jugador1.setOpaque(false);
@@ -152,7 +133,42 @@ public class TREBALL_FINAL_2022 extends JFrame {
         tauler.setLayout(new GridLayout(1, 3));
 
         tauler.add(jugadorsIA);
+        
+        //BARALLA
+        //Ordre: CORS, DIAMANTS, TREBOLS, PIQUES
+        BufferedImage buf;
+        Image imagge;
+        Carta[][] cartas = new Carta[4][13];
+        String[] pals = {"hearts", "diamonds", "clubs", "spades"};
 
+        //inicializamos cartas
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 13; j++) {
+                cartas[i][j] = new Carta();
+                buf = ImageIO.read(new File("Cartes/" + (j + 1) + "_of_" + pals[i] + ".png")); //
+                imagge = buf.getScaledInstance(tamanyCartes[0], tamanyCartes[1], Image.SCALE_DEFAULT);
+                cartas[i][j].crearCarta(imagge);
+            }
+        }
+
+        JLabel[][] Tauler = new JLabel[4][13];
+        JPanel TaulerBaralla = new JPanel();
+        TaulerBaralla.setBackground(colorTauler);
+        TaulerBaralla.setLayout(new GridLayout(4, 13));
+        //inicializamos tablero
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 13; j++) {
+                Tauler[i][j] = new JLabel();
+                Tauler[i][j].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(0, 0, 0)));
+                Tauler[i][j].setLayout(new FlowLayout(FlowLayout.CENTER, 0, 5));
+                Tauler[i][j].setBackground(new Color(0, 82, 0));
+                Tauler[i][j].setOpaque(true);
+                Tauler[i][j].add(cartas[i][j].carta);
+                TaulerBaralla.add(Tauler[i][j]);
+            }
+        }
+        //introducimos las cartas en el tablero
+        
         /*----------------------------------------------------------------------
         --MENU INFERIOR
         ----------------------------------------------------------------------*/
@@ -182,14 +198,17 @@ public class TREBALL_FINAL_2022 extends JFrame {
 
         TableroBaraja.setTopComponent(tauler);
         TableroBaraja.setBottomComponent(TaulerBaralla);
+        TableroBaraja.setDividerSize(0);
         separadorTablero.setTopComponent(TaulerBaralla);
         separadorTablero.setBottomComponent(menuBotons);
+        separadorTablero.setDividerSize(6);
         separadorMenu.setTopComponent(menuBotons);
         separadorMenu.setBottomComponent(texteMissatge);
+        separadorMenu.setDividerSize(6);
 
-        contenedor.add(TableroBaraja, BorderLayout.NORTH);
+        contenedor.add(TableroBaraja, BorderLayout.PAGE_START);
         contenedor.add(separadorTablero, BorderLayout.CENTER);
-        contenedor.add(separadorMenu, BorderLayout.SOUTH);
+        contenedor.add(separadorMenu, BorderLayout.PAGE_END);
 
         setVisible(true);
     }
