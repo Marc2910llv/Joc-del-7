@@ -3,17 +3,13 @@ package treball_final_2022;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.List;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -24,7 +20,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextPane;
 
 /**
  *
@@ -34,11 +29,12 @@ public class TREBALL_FINAL_2022 extends JFrame {
 
     private Container contenedor;
     private final Color colorTauler = new Color(0, 110, 0);
-    private int[] tamanyCartes = {64, 108};
 
     private boolean acabat;
     private final int numCartes = 13;
     private final Jugador[] jugadors = new Jugador[4];
+    Tauler tauler;
+    Baralla baralla;
 
     public static void main(String[] args) {
         try {
@@ -52,137 +48,72 @@ public class TREBALL_FINAL_2022 extends JFrame {
         setTitle("Pràctica Prog II - Joc del 7");
         //setExtendedState(JFrame.MAXIMIZED_BOTH);
         setSize(1000, 700);
-        setResizable(false);
+        setResizable(true);
         setDefaultCloseOperation(TREBALL_FINAL_2022.EXIT_ON_CLOSE);
         contenedor = getContentPane();
+
+        FlowLayout centrado = new FlowLayout(FlowLayout.CENTER, 0, 20);
 
         /*----------------------------------------------------------------------
         --TABLERO DE JUEGO
         ----------------------------------------------------------------------*/
-        //JUGADORS IA
-        BufferedImage bufferedImage = ImageIO.read(new File("Cartes/card_back_blue.png"));
-        Image imCartaBlava = bufferedImage.getScaledInstance(tamanyCartes[0], tamanyCartes[1], Image.SCALE_DEFAULT);
-        
-        JLabel cartesJugadors1 = new JLabel();
-        cartesJugadors1.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 15));
-        JLabel cartesJugadors2 = new JLabel();
-        cartesJugadors2.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 15));
-        JLabel cartesJugadors3 = new JLabel();
-        cartesJugadors3.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 15));
-//
-        JTextArea text_Jugador1 = new JTextArea("0");
-        text_Jugador1.setForeground(Color.WHITE);
-        text_Jugador1.setFont(new Font("Arial", Font.PLAIN, 55));
-        text_Jugador1.setOpaque(false);
-        text_Jugador1.setEditable(false);
-        cartesJugadors1.setIcon(new ImageIcon(imCartaBlava));
-//        cartesJugadors1.setForeground(Color.WHITE);
-//        cartesJugadors1.setBackground(new Color(0, 82, 0));
-//        cartesJugadors1.setText(" 0 ");
-//        cartesJugadors1.setFont(new Font("Arial", Font.PLAIN, 55));
-//        cartesJugadors1.setOpaque(true);
-        cartesJugadors1.add(text_Jugador1);
-//
-        JTextArea text_Jugador2 = new JTextArea("0");
-        text_Jugador2.setForeground(Color.WHITE);
-        text_Jugador2.setFont(new Font("Arial", Font.PLAIN, 55));
-        text_Jugador2.setOpaque(false);
-        text_Jugador2.setEditable(false);
-        cartesJugadors2.setIcon(new ImageIcon(imCartaBlava));
-//        cartesJugadors2.setForeground(Color.WHITE);
-//        cartesJugadors2.setBackground(new Color(0, 82, 0));
-//        cartesJugadors2.setText(" 0 ");
-//        cartesJugadors2.setFont(new Font("Arial", Font.PLAIN, 55));
-//        cartesJugadors2.setOpaque(true);
-        cartesJugadors2.add(text_Jugador2);
-//
-        JTextArea text_Jugador3 = new JTextArea("0");
-        text_Jugador3.setForeground(Color.WHITE);
-        text_Jugador3.setFont(new Font("Arial", Font.PLAIN, 55));
-        text_Jugador3.setOpaque(false);
-        text_Jugador3.setEditable(false);
-        cartesJugadors3.setIcon(new ImageIcon(imCartaBlava));
-//        cartesJugadors3.setForeground(Color.WHITE);
-//        cartesJugadors3.setBackground(new Color(0, 82, 0));
-//        cartesJugadors3.setText(" 0 ");
-//        cartesJugadors3.setFont(new Font("Arial", Font.PLAIN, 55));
-//        cartesJugadors3.setOpaque(true);
-        cartesJugadors3.add(text_Jugador3);
+        //////////////////////////////JUGADORS IA///////////////////////////////
+        CasillaCarta cartesJugador1 = actualitzarMaJugador(0, null);
+        cartesJugador1.setLayout(centrado);
+        CasillaCarta cartesJugador2 = actualitzarMaJugador(0, null);
+        cartesJugador2.setLayout(centrado);
+        CasillaCarta cartesJugador3 = actualitzarMaJugador(0, null);
+        cartesJugador3.setLayout(centrado);
 
-//        //agrupam les baralles dins un panell
-        JPanel jugadorsIA = new JPanel();
-        jugadorsIA.setBackground(colorTauler);
-        jugadorsIA.setLayout(new FlowLayout(FlowLayout.CENTER, 200, 5));
+        //agrupam les baralles dins un panell
+        JPanel taulerJugadorsIA = new JPanel();
+        taulerJugadorsIA.setBackground(colorTauler);
+        taulerJugadorsIA.setLayout(new GridLayout(1, 5, 135, 0));
+        //cream un panell auxiliar que ajuda a mantenir el tamany de la finestra
+        //a més de la colocació de les casilles de la IA correctament
+        JLabel aux = new JLabel();
+        aux.setIcon(new ImageIcon(ImageIO.read(new File("Cartes/card_back_blue.png"))
+                .getScaledInstance(Carta.tamanyCartes[0] + 20, Carta.tamanyCartes[1],
+                        Image.SCALE_DEFAULT)));
+        aux.setVisible(false);
 
-        jugadorsIA.add(cartesJugadors1);
-        jugadorsIA.add(cartesJugadors2);
-        jugadorsIA.add(cartesJugadors3);
+        taulerJugadorsIA.add(aux);
+        taulerJugadorsIA.add(cartesJugador1);
+        taulerJugadorsIA.add(cartesJugador2);
+        taulerJugadorsIA.add(cartesJugador3);
+        taulerJugadorsIA.add(new JLabel());
+        ////////////////////////////////////////////////////////////////////////
 
-        JPanel taulerIA = new JPanel();
-        taulerIA.setBackground(colorTauler);
-        taulerIA.setLayout(new GridLayout(1, 3));
+        ///////////////////////////TAULER - BARALLA/////////////////////////////
+        //Ordre: TREBOLS, DIAMANTS, CORS, PIQUES
+        //inicialitzam tauler amb la baralla
+        CasillaCarta[][] casillas = new CasillaCarta[4][13];
+        JPanel taulerBaralla = new JPanel();
+        taulerBaralla.setBackground(colorTauler);
+        taulerBaralla.setLayout(new GridLayout(4, 13));
+        //mostram el tauler inicial
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 13; j++) {
+                casillas[i][j] = new CasillaCarta();
+                taulerBaralla.add(casillas[i][j]);
+                casillas[i][j].add(new Carta(Pal.values()[i], j + 1).carta);
+            }
+        }
+        ////////////////////////////////////////////////////////////////////////
 
-        taulerIA.add(jugadorsIA);
-
-        //JUGADOR USUARI
-        BufferedImage buff;
-        Image imaggee;
-        Carta[] cartasUsuario = new Carta[13];
+        ////////////////////////////JUGADOR USUARI//////////////////////////////
+        CasillaCarta[] cartasUsuario = new CasillaCarta[13];
+        JPanel maUsuari = new JPanel();
+        maUsuari.setBackground(colorTauler);
+        maUsuari.setLayout(new GridLayout(1, 13));
+        //mostram el tauler inicial
         for (int i = 0; i < 13; i++) {
-            cartasUsuario[i] = new Carta();
-            buff = ImageIO.read(new File("Cartes/card_back_blue.png"));
-            imaggee = buff.getScaledInstance(tamanyCartes[0], tamanyCartes[1], Image.SCALE_DEFAULT);
-            cartasUsuario[i].crearCarta(imaggee);
+            cartasUsuario[i] = new CasillaCarta();
+            maUsuari.add(cartasUsuario[i]);
+            cartasUsuario[i].add(new Carta(Pal.CORS, i + 1).carta);
         }
+        ////////////////////////////////////////////////////////////////////////
 
-        JPanel taulerUsuari = new JPanel();
-        taulerUsuari.setBackground(colorTauler);
-
-        //taulerUsuari.add(this)
-        //BARALLA
-        //Ordre: CORS, DIAMANTS, TREBOLS, PIQUES
-        BufferedImage buf;
-        Image imagge;
-        Carta[][] cartas = new Carta[4][13];
-        String[] pals = {"hearts", "diamonds", "clubs", "spades"};
-
-        //inicializamos cartas
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 13; j++) {
-                cartas[i][j] = new Carta();
-                buf = ImageIO.read(new File("Cartes/" + (j + 1) + "_of_" + pals[i] + ".png")); //
-                imagge = buf.getScaledInstance(tamanyCartes[0], tamanyCartes[1], Image.SCALE_DEFAULT);
-                cartas[i][j].crearCarta(imagge);
-            }
-        }
-
-        TableroJuego[][] casillas = new TableroJuego[4][13];
-        JPanel TaulerBaralla = new JPanel();
-        TaulerBaralla.setBackground(colorTauler);
-        TaulerBaralla.setLayout(new GridLayout(4, 13));
-        //inicializamos tablero
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 13; j++) {
-                casillas[i][j] = new TableroJuego();
-                casillas[i][j].crearCasilla();
-                TaulerBaralla.add(casillas[i][j].casilla);
-            }
-        }
-        //introducimos cartas en el tablero de casillas
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 10; j++) {
-                casillas[i][j].casilla.add(cartas[i][j].carta);
-            }
-        }
-
-        //hem de fer booleans per fer es ficar(carta)
-        //treure(carta)
-        //veure com ho feim fer mesclar
-//        casillas[2][2].casilla.add(cartas[3][12].carta);
-//        casillas[2][4].casilla.add(cartas[1][1].carta);
-//        casillas[2][6].casilla.add(cartas[3][4].carta);
-//        casillas[2][8].casilla.add(cartas[1][7].carta);
-//        casillas[2][6].casilla.remove(cartas[3][4].getCarta());
         /*----------------------------------------------------------------------
         --MENU INFERIOR
         ----------------------------------------------------------------------*/
@@ -202,29 +133,47 @@ public class TREBALL_FINAL_2022 extends JFrame {
         texteMissatge.setEditable(false);
         texteMissatge.setText("             ");
 
-
+        JPanel menuTotal = new JPanel();
+        menuTotal.setLayout(new GridLayout(2, 1));
+        menuTotal.add(menuBotons);
+        menuTotal.add(texteMissatge);
         /*----------------------------------------------------------------------
         --DISTRIBUCIÓ
         ----------------------------------------------------------------------*/
-        JSplitPane TableroBaraja = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        JSplitPane separadorIA = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         JSplitPane separadorTablero = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         JSplitPane separadorMenu = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
-        TableroBaraja.setTopComponent(taulerIA);
-        TableroBaraja.setBottomComponent(TaulerBaralla);
-        TableroBaraja.setDividerSize(0);
-        separadorTablero.setTopComponent(TaulerBaralla);
-        separadorTablero.setBottomComponent(menuBotons);
+        separadorIA.setTopComponent(taulerJugadorsIA);
+        separadorIA.setBottomComponent(taulerBaralla);
+        separadorIA.setDividerSize(0);
+        separadorTablero.setTopComponent(taulerBaralla);
+        separadorTablero.setBottomComponent(maUsuari);
         separadorTablero.setDividerSize(6);
-        separadorMenu.setTopComponent(menuBotons);
-        separadorMenu.setBottomComponent(texteMissatge);
-        separadorMenu.setDividerSize(6);
+        separadorMenu.setTopComponent(maUsuari);
+        separadorMenu.setBottomComponent(menuTotal);
+        separadorMenu.setDividerSize(0);
 
-        contenedor.add(TableroBaraja, BorderLayout.PAGE_START);
+        contenedor.add(separadorIA, BorderLayout.NORTH);
         contenedor.add(separadorTablero, BorderLayout.CENTER);
-        contenedor.add(separadorMenu, BorderLayout.PAGE_END);
+        contenedor.add(separadorMenu, BorderLayout.SOUTH);
 
         setVisible(true);
+    }
+
+    private CasillaCarta actualitzarMaJugador(int cartesRestants, BufferedImage bufferedImage) {
+        CasillaCarta aux = new CasillaCarta();
+        if (bufferedImage != null) {
+            Image imatge = bufferedImage.getScaledInstance(Carta.tamanyCartes[0] + 20, Carta.tamanyCartes[1], Image.SCALE_DEFAULT);
+            aux.setIcon(new ImageIcon(imatge));
+        }
+        JTextArea text_Jugador = new JTextArea(String.valueOf(cartesRestants));
+        text_Jugador.setForeground(Color.WHITE);
+        text_Jugador.setFont(new Font("Arial", Font.PLAIN, 55));
+        text_Jugador.setOpaque(false);
+        text_Jugador.setEditable(false);
+        aux.add(text_Jugador);
+        return aux;
     }
 
     private void inici() {

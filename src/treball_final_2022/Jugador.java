@@ -38,8 +38,7 @@ public class Jugador {
     public void treureCarta(Tauler taula) {
         boolean sacado = false;
         for (int i = 0; i < cartasAsignadas.size() && !sacado; i++) {
-            if (taula.cartaColocable(cartasAsignadas.get(i))) {
-                taula.escriure(cartasAsignadas.get(i));
+            if (taula.colocarCarta(cartasAsignadas.get(i))) {
                 cartasAsignadas.remove(i);
                 sacado = true;
             }

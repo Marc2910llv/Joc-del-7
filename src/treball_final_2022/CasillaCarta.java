@@ -13,29 +13,19 @@ import javax.swing.JLabel;
  *
  * @author Carlos Lozano, Marc Llobera
  */
-public class TableroJuego extends JLabel {
+public class CasillaCarta extends JLabel {
 
-    JLabel casilla;
-
-    public TableroJuego() {
-        casilla = new JLabel();
+    public CasillaCarta() {
+        setBorder(javax.swing.BorderFactory.createLineBorder((new Color(0, 110, 0)), 2));
+        setLayout(new FlowLayout(FlowLayout.RIGHT, 2, 2));
+        setBackground(new Color(0, 82, 0));
+        setOpaque(true);
     }
-
-    public JLabel crearCasilla() {
-        casilla = new JLabel();
-        casilla.setBorder(javax.swing.BorderFactory.createLineBorder((new Color(0,110,0)),2));
-        casilla.setLayout(new FlowLayout(FlowLayout.RIGHT, 2, 2));
-        casilla.setBackground(new Color(0, 82, 0));
-        casilla.setOpaque(true);
-        return casilla;
-    }
-    
- 
 
 }
 //    Carta[][] Tauler;
 //
-//    public TableroJuego() {
+//    public CasillaCarta() {
 //        Tauler = new Carta[4][13];
 //    }
 //

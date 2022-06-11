@@ -10,5 +10,19 @@ package treball_final_2022;
  * @author carlos
  */
 public enum Pal {
-    CORS, DIAMANTS, TREBOLS, PIQUES;
+    TREBOLS, DIAMANTS, CORS, PIQUES;
+
+    public static String nomPal(Pal pal) {
+        switch (pal) {
+            case TREBOLS:
+                return "clubs";
+            case DIAMANTS:
+                return "diamonds";
+            case CORS:
+                return "hearts";
+            case PIQUES:
+                return "spades";
+        }
+        return null;
+    }
 }
