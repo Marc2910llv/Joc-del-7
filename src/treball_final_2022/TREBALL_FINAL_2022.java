@@ -51,7 +51,7 @@ public class TREBALL_FINAL_2022 extends JFrame {
     private void interfici() throws IOException {
         setTitle("Pràctica Prog II - Joc del 7");
         //setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setSize(1000, 650);
+        setSize(1000, 700);
         setResizable(false);
         setDefaultCloseOperation(TREBALL_FINAL_2022.EXIT_ON_CLOSE);
         contenedor = getContentPane();
@@ -61,8 +61,8 @@ public class TREBALL_FINAL_2022 extends JFrame {
         ----------------------------------------------------------------------*/
         //JUGADORS IA
         BufferedImage bufferedImage = ImageIO.read(new File("Cartes/card_back_blue.png"));
-        Image image = bufferedImage.getScaledInstance(tamanyCartes[0], tamanyCartes[1], Image.SCALE_DEFAULT);
-        //iniciam els contenidors de les baralles dels jugadors IA
+        Image imCartaBlava = bufferedImage.getScaledInstance(tamanyCartes[0], tamanyCartes[1], Image.SCALE_DEFAULT);
+        
         JLabel cartesJugadors1 = new JLabel();
         cartesJugadors1.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 15));
         JLabel cartesJugadors2 = new JLabel();
@@ -70,44 +70,44 @@ public class TREBALL_FINAL_2022 extends JFrame {
         JLabel cartesJugadors3 = new JLabel();
         cartesJugadors3.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 15));
 //
-//        //JTextArea text_Jugador1 = new JTextArea("0");
-////       text_Jugador1.setForeground(Color.WHITE);
-////        text_Jugador1.setFont(new Font("Arial", Font.PLAIN, 55));
-////       text_Jugador1.setOpaque(false);
-////        text_Jugador1.setEditable(false);
-//        cartesJugadors1.setIcon(new ImageIcon(image));
-        cartesJugadors1.setForeground(Color.WHITE);
-        cartesJugadors1.setBackground(new Color(0, 82, 0));
-        cartesJugadors1.setText(" 0 ");
-        cartesJugadors1.setFont(new Font("Arial", Font.PLAIN, 55));
-        cartesJugadors1.setOpaque(true);
-//        //cartesJugadors1.add(text_Jugador1);
+        JTextArea text_Jugador1 = new JTextArea("0");
+        text_Jugador1.setForeground(Color.WHITE);
+        text_Jugador1.setFont(new Font("Arial", Font.PLAIN, 55));
+        text_Jugador1.setOpaque(false);
+        text_Jugador1.setEditable(false);
+        cartesJugadors1.setIcon(new ImageIcon(imCartaBlava));
+//        cartesJugadors1.setForeground(Color.WHITE);
+//        cartesJugadors1.setBackground(new Color(0, 82, 0));
+//        cartesJugadors1.setText(" 0 ");
+//        cartesJugadors1.setFont(new Font("Arial", Font.PLAIN, 55));
+//        cartesJugadors1.setOpaque(true);
+        cartesJugadors1.add(text_Jugador1);
 //
-////        JTextArea text_Jugador2 = new JTextArea("0");
-////        text_Jugador2.setForeground(Color.WHITE);
-////        text_Jugador2.setFont(new Font("Arial", Font.PLAIN, 55));
-////        text_Jugador2.setOpaque(false);
-////        text_Jugador2.setEditable(false);
-////        cartesJugadors2.setIcon(new ImageIcon(image));
-        cartesJugadors2.setForeground(Color.WHITE);
-        cartesJugadors2.setBackground(new Color(0, 82, 0));
-        cartesJugadors2.setText(" 0 ");
-        cartesJugadors2.setFont(new Font("Arial", Font.PLAIN, 55));
-        cartesJugadors2.setOpaque(true);
-//        //cartesJugadors2.add(text_Jugador2);
+        JTextArea text_Jugador2 = new JTextArea("0");
+        text_Jugador2.setForeground(Color.WHITE);
+        text_Jugador2.setFont(new Font("Arial", Font.PLAIN, 55));
+        text_Jugador2.setOpaque(false);
+        text_Jugador2.setEditable(false);
+        cartesJugadors2.setIcon(new ImageIcon(imCartaBlava));
+//        cartesJugadors2.setForeground(Color.WHITE);
+//        cartesJugadors2.setBackground(new Color(0, 82, 0));
+//        cartesJugadors2.setText(" 0 ");
+//        cartesJugadors2.setFont(new Font("Arial", Font.PLAIN, 55));
+//        cartesJugadors2.setOpaque(true);
+        cartesJugadors2.add(text_Jugador2);
 //
-////        JTextArea text_Jugador3 = new JTextArea("0");
-////        text_Jugador3.setForeground(Color.WHITE);
-////        text_Jugador3.setFont(new Font("Arial", Font.PLAIN, 55));
-////        text_Jugador3.setOpaque(false);
-////        text_Jugador3.setEditable(false);
-////        cartesJugadors3.setIcon(new ImageIcon(image));
-        cartesJugadors3.setForeground(Color.WHITE);
-        cartesJugadors3.setBackground(new Color(0, 82, 0));
-        cartesJugadors3.setText(" 0 ");
-        cartesJugadors3.setFont(new Font("Arial", Font.PLAIN, 55));
-        cartesJugadors3.setOpaque(true);
-//        //cartesJugadors3.add(text_Jugador3);
+        JTextArea text_Jugador3 = new JTextArea("0");
+        text_Jugador3.setForeground(Color.WHITE);
+        text_Jugador3.setFont(new Font("Arial", Font.PLAIN, 55));
+        text_Jugador3.setOpaque(false);
+        text_Jugador3.setEditable(false);
+        cartesJugadors3.setIcon(new ImageIcon(imCartaBlava));
+//        cartesJugadors3.setForeground(Color.WHITE);
+//        cartesJugadors3.setBackground(new Color(0, 82, 0));
+//        cartesJugadors3.setText(" 0 ");
+//        cartesJugadors3.setFont(new Font("Arial", Font.PLAIN, 55));
+//        cartesJugadors3.setOpaque(true);
+        cartesJugadors3.add(text_Jugador3);
 
 //        //agrupam les baralles dins un panell
         JPanel jugadorsIA = new JPanel();
@@ -118,21 +118,27 @@ public class TREBALL_FINAL_2022 extends JFrame {
         jugadorsIA.add(cartesJugadors2);
         jugadorsIA.add(cartesJugadors3);
 
-        //JUGADOR USUARI
-        Carta[] cartasUsuario = new Carta[13];
+        JPanel taulerIA = new JPanel();
+        taulerIA.setBackground(colorTauler);
+        taulerIA.setLayout(new GridLayout(1, 3));
 
-//        barallaUsuari.setFont(new Font("SansSerif", Font.PLAIN, 30));
-        //    barallaUsuari.setText("13");
+        taulerIA.add(jugadorsIA);
+
+        //JUGADOR USUARI
+        BufferedImage buff;
+        Image imaggee;
+        Carta[] cartasUsuario = new Carta[13];
         for (int i = 0; i < 13; i++) {
-            //  barallaUsuari.setIcon(new ImageIcon("Cartes/card_back_blue.png"));
+            cartasUsuario[i] = new Carta();
+            buff = ImageIO.read(new File("Cartes/card_back_blue.png"));
+            imaggee = buff.getScaledInstance(tamanyCartes[0], tamanyCartes[1], Image.SCALE_DEFAULT);
+            cartasUsuario[i].crearCarta(imaggee);
         }
 
-        JPanel tauler = new JPanel();
-        tauler.setBackground(colorTauler);
-        tauler.setLayout(new GridLayout(1, 3));
+        JPanel taulerUsuari = new JPanel();
+        taulerUsuari.setBackground(colorTauler);
 
-        tauler.add(jugadorsIA);
-
+        //taulerUsuari.add(this)
         //BARALLA
         //Ordre: CORS, DIAMANTS, TREBOLS, PIQUES
         BufferedImage buf;
@@ -168,19 +174,15 @@ public class TREBALL_FINAL_2022 extends JFrame {
                 casillas[i][j].casilla.add(cartas[i][j].carta);
             }
         }
-        
+
         //hem de fer booleans per fer es ficar(carta)
         //treure(carta)
         //veure com ho feim fer mesclar
-        
 //        casillas[2][2].casilla.add(cartas[3][12].carta);
 //        casillas[2][4].casilla.add(cartas[1][1].carta);
 //        casillas[2][6].casilla.add(cartas[3][4].carta);
 //        casillas[2][8].casilla.add(cartas[1][7].carta);
 //        casillas[2][6].casilla.remove(cartas[3][4].getCarta());
-        
-       
-
         /*----------------------------------------------------------------------
         --MENU INFERIOR
         ----------------------------------------------------------------------*/
@@ -208,7 +210,7 @@ public class TREBALL_FINAL_2022 extends JFrame {
         JSplitPane separadorTablero = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         JSplitPane separadorMenu = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
-        TableroBaraja.setTopComponent(tauler);
+        TableroBaraja.setTopComponent(taulerIA);
         TableroBaraja.setBottomComponent(TaulerBaralla);
         TableroBaraja.setDividerSize(0);
         separadorTablero.setTopComponent(TaulerBaralla);

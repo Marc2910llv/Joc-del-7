@@ -5,8 +5,12 @@
  */
 package treball_final_2022;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -19,7 +23,7 @@ public class Carta extends JLabel {
     JLabel carta;
 
     // CONSTRUCTOR
-    public Carta( ) {
+    public Carta() {
         carta = new JLabel();
     }
 
@@ -29,9 +33,9 @@ public class Carta extends JLabel {
         carta.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         return carta;
     }
-    
-    public JLabel getCarta(){
+
+    public JLabel getCarta() {
         return carta;
     }
-    
+
 }
