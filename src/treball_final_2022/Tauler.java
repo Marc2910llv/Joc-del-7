@@ -20,27 +20,8 @@ public class Tauler {
     public Tauler() {
         tauler = new Carta[files][columnes];
     }
-
-    //SI FUNCIONA ELIMINAR AIXÒ
-//    public void escriure(Carta carta) {
-//        int fila = 0, columna;
-//        switch (carta.getPal()) {
-//            case TREBOLS:
-//                fila = 0;
-//                break;
-//            case DIAMANTS:
-//                fila = 1;
-//                break;
-//            case CORS:
-//                fila = 2;
-//                break;
-//            case PIQUES:
-//                fila = 3;
-//                break;
-//        }
-//        columna = carta.getNum() - 1;
-//        tauler[fila][columna] = carta;
-//    }
+    
+    
     public boolean colocarCarta(Carta carta) {
         int fila = 0, columna;
         switch (carta.getPal()) {
@@ -69,14 +50,16 @@ public class Tauler {
                 }
             }
             return false;
-        } else if (columna == 12) {
+        } 
+        if (columna == 12) {
             if (tauler[fila][columna - 1] != null) {
                 if (tauler[fila][columna - 1].getNum() == 12) {
                     tauler[fila][columna] = carta;
                 }
             }
             return false;
-        } else if (tauler[fila][columna - 1] != null) {
+        } 
+        if (tauler[fila][columna - 1] != null) {
             if (tauler[fila][columna - 1].getNum() < carta.getNum()) {
                 tauler[fila][columna] = carta;
             }

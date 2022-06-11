@@ -21,6 +21,7 @@ public class CasillaCarta extends JLabel {
         setBackground(new Color(0, 82, 0));
         setOpaque(true);
     }
+  
 
 }
 //    Carta[][] Tauler;

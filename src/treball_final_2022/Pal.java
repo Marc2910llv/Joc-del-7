@@ -7,7 +7,7 @@ package treball_final_2022;
 
 /**
  *
- * @author carlos
+ * @author Carlos Lozano, Marc Llobera
  */
 public enum Pal {
     TREBOLS, DIAMANTS, CORS, PIQUES;

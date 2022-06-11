@@ -72,9 +72,7 @@ public class TREBALL_FINAL_2022 extends JFrame {
         //cream un panell auxiliar que ajuda a mantenir el tamany de la finestra
         //a més de la colocació de les casilles de la IA correctament
         JLabel aux = new JLabel();
-        aux.setIcon(new ImageIcon(ImageIO.read(new File("Cartes/card_back_blue.png"))
-                .getScaledInstance(Carta.tamanyCartes[0] + 20, Carta.tamanyCartes[1],
-                        Image.SCALE_DEFAULT)));
+        aux.setIcon(new ImageIcon(ImageIO.read(new File("Cartes/card_back_blue.png")).getScaledInstance(Carta.tamanyCartes[0] + 20, Carta.tamanyCartes[1], Image.SCALE_DEFAULT)));
         aux.setVisible(false);
 
         taulerJugadorsIA.add(aux);
@@ -91,27 +89,84 @@ public class TREBALL_FINAL_2022 extends JFrame {
         JPanel taulerBaralla = new JPanel();
         taulerBaralla.setBackground(colorTauler);
         taulerBaralla.setLayout(new GridLayout(4, 13));
+        Carta[][] cartas = new Carta[4][13];
+
+        //inicialitzam cartes
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 13; j++) {
+                cartas[i][j] = new Carta(Pal.values()[i], j + 1);
+            }
+        }
+
         //mostram el tauler inicial
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 13; j++) {
                 casillas[i][j] = new CasillaCarta();
                 taulerBaralla.add(casillas[i][j]);
-                casillas[i][j].add(new Carta(Pal.values()[i], j + 1).carta);
             }
         }
+        //añadir cartas a las casillas del tablero
+        Tauler t = new Tauler();
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 13; j++) {
+               // if (t.colocarCarta(cartas[i][j])) {
+                    casillas[i][j].add(cartas[i][j].carta);
+               // }
+            }
+        }
+
+        //MEZCLAR cartas[][] y añadir otra vez
+        //NO BORRAR NI TOCAR, després vorem si mhos va be
+        //obtener baraja de cada jugador después de mezclar
+//        Carta[] BarajaUsuario = new Carta[13];
+//        Carta[] BarajaJug1 = new Carta[13];
+//        Carta[] BarajaJug2 = new Carta[13];
+//        Carta[] BarajaJug3 = new Carta[13];
+//        Carta aux2 ;
+//        for (int i = 0; i < 4; i++) {
+//            for (int j = 0; j < 13; j++) {
+//              aux2 = new Carta(cartas[i][j].getPal(), cartas[i][j].getNum());
+//              
+//                if (i == 0) {
+//                    BarajaUsuario[j] = new Carta(Pal.values()[i],j+1);
+//                    BarajaUsuario[j].add(aux2);
+//                } else if (i == 1) {
+//                    BarajaJug1[j] = new Carta(Pal.values()[i],j+1);
+//                    BarajaJug1[j].add(aux2);
+//                } else if (i == 2) {
+//                    BarajaJug2[j] = new Carta(Pal.values()[i],j+1);
+//                    BarajaJug2[j].add(aux2);
+//                } else if (i == 3) {
+//                    BarajaJug3[j] = new Carta(Pal.values()[i],j+1);
+//                    BarajaJug3[j].add(aux2);
+//                }
+//            }
+//        }
         ////////////////////////////////////////////////////////////////////////
 
         ////////////////////////////JUGADOR USUARI//////////////////////////////
-        CasillaCarta[] cartasUsuario = new CasillaCarta[13];
+        CasillaCarta[] casillasUsuario = new CasillaCarta[13];
         JPanel maUsuari = new JPanel();
         maUsuari.setBackground(colorTauler);
         maUsuari.setLayout(new GridLayout(1, 13));
-        //mostram el tauler inicial
+        
+        //NO BORRAR
+        // en teoria sobren ses casillas; 
+//        for (int i = 0; i < BarajaJug1.length; i++) {
+//            casillasUsuario[i] = new CasillaCarta();
+//            maUsuari.add(casillasUsuario[i]);
+//            casillasUsuario[i].add(BarajaJug1[i].getCarta());
+//        }
         for (int i = 0; i < 13; i++) {
-            cartasUsuario[i] = new CasillaCarta();
-            maUsuari.add(cartasUsuario[i]);
-            cartasUsuario[i].add(new Carta(Pal.CORS, i + 1).carta);
+            casillasUsuario[i] = new CasillaCarta();
+            maUsuari.add(casillasUsuario[i]);
         }
+        
+          for (int i = 0; i < 13; i++) {
+              casillasUsuario[i].add(cartas[0][i].carta);
+          }
+        
+        
         ////////////////////////////////////////////////////////////////////////
 
         /*----------------------------------------------------------------------

@@ -21,13 +21,14 @@ import javax.swing.JLabel;
  * @author Carlos Lozano, Marc Llobera
  */
 public class Carta extends JLabel {
-
+    
     private final Pal pal;
     private final int num;
     JLabel carta;
     public static final int[] tamanyCartes = {64, 108};
 
     // CONSTRUCTOR
+   
     public Carta(Pal pal, int i) {
         this.pal = pal;
         this.num = i;
@@ -42,6 +43,9 @@ public class Carta extends JLabel {
                     + ", no s'ha pogut afegir correctament.");
         }
     }
+    
+    
+    
 
     public JLabel getCarta() {
         return carta;
