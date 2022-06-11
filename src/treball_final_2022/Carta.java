@@ -26,7 +26,7 @@ public class Carta extends JLabel {
     public JLabel crearCarta(Image im) {
         carta = new JLabel();
         carta.setIcon(new ImageIcon(im));
-        carta.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 5));
+        carta.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         return carta;
     }
     

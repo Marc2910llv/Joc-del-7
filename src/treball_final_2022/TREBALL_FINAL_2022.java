@@ -34,7 +34,7 @@ public class TREBALL_FINAL_2022 extends JFrame {
 
     private Container contenedor;
     private final Color colorTauler = new Color(0, 110, 0);
-    private int[] tamanyCartes = {65, 100};
+    private int[] tamanyCartes = {64, 108};
 
     private boolean acabat;
     private final int numCartes = 13;
@@ -51,7 +51,7 @@ public class TREBALL_FINAL_2022 extends JFrame {
     private void interfici() throws IOException {
         setTitle("Pràctica Prog II - Joc del 7");
         //setExtendedState(JFrame.MAXIMIZED_BOTH);
-         setSize(1000, 650);
+        setSize(1000, 650);
         setResizable(false);
         setDefaultCloseOperation(TREBALL_FINAL_2022.EXIT_ON_CLOSE);
         contenedor = getContentPane();
@@ -119,13 +119,12 @@ public class TREBALL_FINAL_2022 extends JFrame {
         jugadorsIA.add(cartesJugadors3);
 
         //JUGADOR USUARI
-        JLabel barallaUsuari = new JLabel();
+        Carta[] cartasUsuario = new Carta[13];
 
-        barallaUsuari.setFont(new Font("SansSerif", Font.PLAIN, 30));
-        barallaUsuari.setText("13");
-
+//        barallaUsuari.setFont(new Font("SansSerif", Font.PLAIN, 30));
+        //    barallaUsuari.setText("13");
         for (int i = 0; i < 13; i++) {
-            barallaUsuari.setIcon(new ImageIcon("Cartes/card_back_blue.png"));
+            //  barallaUsuari.setIcon(new ImageIcon("Cartes/card_back_blue.png"));
         }
 
         JPanel tauler = new JPanel();
@@ -133,7 +132,7 @@ public class TREBALL_FINAL_2022 extends JFrame {
         tauler.setLayout(new GridLayout(1, 3));
 
         tauler.add(jugadorsIA);
-        
+
         //BARALLA
         //Ordre: CORS, DIAMANTS, TREBOLS, PIQUES
         BufferedImage buf;
@@ -151,24 +150,37 @@ public class TREBALL_FINAL_2022 extends JFrame {
             }
         }
 
-        JLabel[][] Tauler = new JLabel[4][13];
+        TableroJuego[][] casillas = new TableroJuego[4][13];
         JPanel TaulerBaralla = new JPanel();
         TaulerBaralla.setBackground(colorTauler);
         TaulerBaralla.setLayout(new GridLayout(4, 13));
         //inicializamos tablero
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 13; j++) {
-                Tauler[i][j] = new JLabel();
-                Tauler[i][j].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(0, 0, 0)));
-                Tauler[i][j].setLayout(new FlowLayout(FlowLayout.CENTER, 0, 5));
-                Tauler[i][j].setBackground(new Color(0, 82, 0));
-                Tauler[i][j].setOpaque(true);
-                Tauler[i][j].add(cartas[i][j].carta);
-                TaulerBaralla.add(Tauler[i][j]);
+                casillas[i][j] = new TableroJuego();
+                casillas[i][j].crearCasilla();
+                TaulerBaralla.add(casillas[i][j].casilla);
             }
         }
-        //introducimos las cartas en el tablero
+        //introducimos cartas en el tablero de casillas
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 10; j++) {
+                casillas[i][j].casilla.add(cartas[i][j].carta);
+            }
+        }
         
+        //hem de fer booleans per fer es ficar(carta)
+        //treure(carta)
+        //veure com ho feim fer mesclar
+        
+//        casillas[2][2].casilla.add(cartas[3][12].carta);
+//        casillas[2][4].casilla.add(cartas[1][1].carta);
+//        casillas[2][6].casilla.add(cartas[3][4].carta);
+//        casillas[2][8].casilla.add(cartas[1][7].carta);
+//        casillas[2][6].casilla.remove(cartas[3][4].getCarta());
+        
+       
+
         /*----------------------------------------------------------------------
         --MENU INFERIOR
         ----------------------------------------------------------------------*/
