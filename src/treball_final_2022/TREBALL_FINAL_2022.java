@@ -47,7 +47,7 @@ public class TREBALL_FINAL_2022 extends JFrame {
     private void interfici() throws IOException {
         setTitle("Pràctica Prog II - Joc del 7");
         //setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setSize(1000, 700);
+        setSize(1000, 800);
         setResizable(true);
         setDefaultCloseOperation(TREBALL_FINAL_2022.EXIT_ON_CLOSE);
         contenedor = getContentPane();
@@ -109,9 +109,9 @@ public class TREBALL_FINAL_2022 extends JFrame {
         Tauler t = new Tauler();
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 13; j++) {
-               // if (t.colocarCarta(cartas[i][j])) {
+                if (t.colocarCarta(cartas[i][j])) {
                     casillas[i][j].add(cartas[i][j].carta);
-               // }
+                }
             }
         }
 
@@ -143,54 +143,80 @@ public class TREBALL_FINAL_2022 extends JFrame {
 //            }
 //        }
         ////////////////////////////////////////////////////////////////////////
-
         ////////////////////////////JUGADOR USUARI//////////////////////////////
-        CasillaCarta[] casillasUsuario = new CasillaCarta[13];
-        JPanel maUsuari = new JPanel();
-        maUsuari.setBackground(colorTauler);
-        maUsuari.setLayout(new GridLayout(1, 13));
-        
+        JPanel TaulerUsuari = new JPanel();
+        TaulerUsuari.setBackground(Color.BLACK);
+        TaulerUsuari.setLayout(new GridLayout(1, 13));
+        TaulerUsuari.setLayout(new FlowLayout(FlowLayout.CENTER, 7, 2));
+        Carta[][] cartasUsuario = new Carta[1][13];
+        CasillaCarta[][] casillasUsuario = new CasillaCarta[1][13];
+
         //NO BORRAR
         // en teoria sobren ses casillas; 
 //        for (int i = 0; i < BarajaJug1.length; i++) {
 //            casillasUsuario[i] = new CasillaCarta();
-//            maUsuari.add(casillasUsuario[i]);
+//            TaulerUsuari.add(casillasUsuario[i]);
 //            casillasUsuario[i].add(BarajaJug1[i].getCarta());
 //        }
-        for (int i = 0; i < 13; i++) {
-            casillasUsuario[i] = new CasillaCarta();
-            maUsuari.add(casillasUsuario[i]);
+
+//        for (int i = 0; i < 13; i++) {
+//            casillasUsuario[i] = new CasillaCarta();
+//            TaulerUsuari.add(casillasUsuario[i]);
+//        }
+
+//NECESITAM SES CASILLAS PER PODER AFEGIR /LLEVAR CARTES i no me va be XD
+//SI COMENTES SA 176 I DESCOMENTES 174,175 SE VEU
+        TaulerUsuari.setSize(800,800);
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 13; j++) {
+                casillasUsuario[i][j] = new CasillaCarta();
+                cartasUsuario[i][j] = new Carta(Pal.values()[i + 1], j + 1);
+//                casillasUsuario[i][j].add(cartas[i][j].carta);
+//                TaulerUsuari.add(casillasUsuario[i][j]);
+                TaulerUsuari.add(cartas[i][j].carta);
+                
+
+            }
         }
-        
-          for (int i = 0; i < 13; i++) {
-              casillasUsuario[i].add(cartas[0][i].carta);
-          }
-        
-        
+
         ////////////////////////////////////////////////////////////////////////
 
         /*----------------------------------------------------------------------
         --MENU INFERIOR
         ----------------------------------------------------------------------*/
         JPanel menuBotons = new JPanel();
-        menuBotons.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 3));
+
+        menuBotons.setLayout(
+                new FlowLayout(FlowLayout.CENTER, 10, 3));
         JButton mescla = new JButton(" Mescla ");
-        mescla.setBorder(new RoundedBorder(6));
+
+        mescla.setBorder(
+                new RoundedBorder(6));
         menuBotons.add(mescla);
         JButton juga = new JButton("  Juga  ");
-        juga.setBorder(new RoundedBorder(6));
+
+        juga.setBorder(
+                new RoundedBorder(6));
         menuBotons.add(juga);
         JButton reinicia = new JButton("Reinicia");
-        reinicia.setBorder(new RoundedBorder(6));
+
+        reinicia.setBorder(
+                new RoundedBorder(6));
         menuBotons.add(reinicia);
 
         JTextArea texteMissatge = new JTextArea();
-        texteMissatge.setEditable(false);
-        texteMissatge.setText("             ");
+
+        texteMissatge.setEditable(
+                false);
+        texteMissatge.setText(
+                "             ");
 
         JPanel menuTotal = new JPanel();
-        menuTotal.setLayout(new GridLayout(2, 1));
+
+        menuTotal.setLayout(
+                new GridLayout(2, 1));
         menuTotal.add(menuBotons);
+
         menuTotal.add(texteMissatge);
         /*----------------------------------------------------------------------
         --DISTRIBUCIÓ
@@ -200,20 +226,32 @@ public class TREBALL_FINAL_2022 extends JFrame {
         JSplitPane separadorMenu = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
         separadorIA.setTopComponent(taulerJugadorsIA);
+
         separadorIA.setBottomComponent(taulerBaralla);
-        separadorIA.setDividerSize(0);
+
+        separadorIA.setDividerSize(
+                0);
         separadorTablero.setTopComponent(taulerBaralla);
-        separadorTablero.setBottomComponent(maUsuari);
-        separadorTablero.setDividerSize(6);
-        separadorMenu.setTopComponent(maUsuari);
+
+        separadorTablero.setBottomComponent(TaulerUsuari);
+
+        separadorTablero.setDividerSize(
+                6);
+        separadorMenu.setTopComponent(TaulerUsuari);
+
         separadorMenu.setBottomComponent(menuTotal);
-        separadorMenu.setDividerSize(0);
+
+        separadorMenu.setDividerSize(
+                0);
 
         contenedor.add(separadorIA, BorderLayout.NORTH);
+
         contenedor.add(separadorTablero, BorderLayout.CENTER);
+
         contenedor.add(separadorMenu, BorderLayout.SOUTH);
 
-        setVisible(true);
+        setVisible(
+                true);
     }
 
     private CasillaCarta actualitzarMaJugador(int cartesRestants, BufferedImage bufferedImage) {
