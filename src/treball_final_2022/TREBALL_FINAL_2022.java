@@ -47,8 +47,8 @@ public class TREBALL_FINAL_2022 extends JFrame {
     private void interfici() throws IOException {
         setTitle("Pràctica Prog II - Joc del 7");
         //setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setSize(1000, 800);
-        setResizable(true);
+        setSize(1000, 900);
+        setResizable(false);
         setDefaultCloseOperation(TREBALL_FINAL_2022.EXIT_ON_CLOSE);
         contenedor = getContentPane();
 
@@ -90,7 +90,6 @@ public class TREBALL_FINAL_2022 extends JFrame {
         taulerBaralla.setBackground(colorTauler);
         taulerBaralla.setLayout(new GridLayout(4, 13));
         Carta[][] cartas = new Carta[4][13];
-
         //inicialitzam cartes
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 13; j++) {
@@ -105,13 +104,14 @@ public class TREBALL_FINAL_2022 extends JFrame {
                 taulerBaralla.add(casillas[i][j]);
             }
         }
+
         //añadir cartas a las casillas del tablero
         Tauler t = new Tauler();
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 13; j++) {
-                if (t.colocarCarta(cartas[i][j])) {
-                    casillas[i][j].add(cartas[i][j].carta);
-                }
+                // if (t.colocarCarta(cartas[i][j])) {
+                casillas[i][j].add(cartas[i][j].carta);
+                // }
             }
         }
 
@@ -144,13 +144,6 @@ public class TREBALL_FINAL_2022 extends JFrame {
 //        }
         ////////////////////////////////////////////////////////////////////////
         ////////////////////////////JUGADOR USUARI//////////////////////////////
-        JPanel TaulerUsuari = new JPanel();
-        TaulerUsuari.setBackground(Color.BLACK);
-        TaulerUsuari.setLayout(new GridLayout(1, 13));
-        TaulerUsuari.setLayout(new FlowLayout(FlowLayout.CENTER, 7, 2));
-        Carta[][] cartasUsuario = new Carta[1][13];
-        CasillaCarta[][] casillasUsuario = new CasillaCarta[1][13];
-
         //NO BORRAR
         // en teoria sobren ses casillas; 
 //        for (int i = 0; i < BarajaJug1.length; i++) {
@@ -158,25 +151,43 @@ public class TREBALL_FINAL_2022 extends JFrame {
 //            TaulerUsuari.add(casillasUsuario[i]);
 //            casillasUsuario[i].add(BarajaJug1[i].getCarta());
 //        }
-
 //        for (int i = 0; i < 13; i++) {
 //            casillasUsuario[i] = new CasillaCarta();
 //            TaulerUsuari.add(casillasUsuario[i]);
 //        }
-
 //NECESITAM SES CASILLAS PER PODER AFEGIR /LLEVAR CARTES i no me va be XD
 //SI COMENTES SA 176 I DESCOMENTES 174,175 SE VEU
-        TaulerUsuari.setSize(800,800);
-        for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 13; j++) {
-                casillasUsuario[i][j] = new CasillaCarta();
-                cartasUsuario[i][j] = new Carta(Pal.values()[i + 1], j + 1);
-//                casillasUsuario[i][j].add(cartas[i][j].carta);
-//                TaulerUsuari.add(casillasUsuario[i][j]);
-                TaulerUsuari.add(cartas[i][j].carta);
-                
+        JPanel TaulerUsuari = new JPanel();
+        TaulerUsuari.setBackground(colorTauler);
+        TaulerUsuari.setLayout(new GridLayout(2, 1, 8, 0));
+        Carta[][] cartasUsuario = new Carta[1][13];
 
-            }
+        JTextArea auxx = new JTextArea("\n  0");
+        
+        auxx.setLayout(new FlowLayout(FlowLayout.CENTER));
+        auxx.setForeground(Color.WHITE);
+        auxx.setFont(new Font("Arial", Font.PLAIN, 45));
+        auxx.setOpaque(false);
+        auxx.setEditable(false);
+        TaulerUsuari.add(auxx);
+        for (int j = 1; j < 13; j++) {
+            TaulerUsuari.add(new JLabel());
+
+        }
+
+        CasillaCarta casilla = new CasillaCarta();
+        cartasUsuario[0][0] = new Carta(Pal.values()[1], 7);
+        casilla.add(cartasUsuario[0][0].carta);
+        TaulerUsuari.add(casilla);
+        for (int j = 1; j < 13; j++) {
+            // casillasUsuario[i][j] = new CasillaCarta();
+           
+            cartasUsuario[0][j] = new Carta(Pal.values()[1], j + 1);
+            //cartasUsuario[i][j].setBorder(javax.swing.BorderFactory.createLineBorder((new Color(0, 110, 0)), 1));
+            // casillasUsuario[i][j].add(cartasUsuario[i][j].carta);
+            //  TaulerUsuari.add(casillasUsuario[i][j]);
+            //  TaulerUsuari.add(casillasUsuario[i][j]);
+            TaulerUsuari.add(cartasUsuario[0][j].carta);
         }
 
         ////////////////////////////////////////////////////////////////////////
@@ -222,27 +233,30 @@ public class TREBALL_FINAL_2022 extends JFrame {
         --DISTRIBUCIÓ
         ----------------------------------------------------------------------*/
         JSplitPane separadorIA = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+         separadorIA.setBackground(colorTauler);
         JSplitPane separadorTablero = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        separadorTablero.setBackground(colorTauler);
         JSplitPane separadorMenu = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        separadorMenu.setBackground(colorTauler);
 
         separadorIA.setTopComponent(taulerJugadorsIA);
 
         separadorIA.setBottomComponent(taulerBaralla);
 
         separadorIA.setDividerSize(
-                0);
+                5);
         separadorTablero.setTopComponent(taulerBaralla);
 
         separadorTablero.setBottomComponent(TaulerUsuari);
 
         separadorTablero.setDividerSize(
-                6);
+                5);
         separadorMenu.setTopComponent(TaulerUsuari);
 
         separadorMenu.setBottomComponent(menuTotal);
 
         separadorMenu.setDividerSize(
-                0);
+                5);
 
         contenedor.add(separadorIA, BorderLayout.NORTH);
 
