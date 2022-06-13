@@ -17,11 +17,10 @@ public class CasillaCarta extends JLabel {
 
     public CasillaCarta() {
         setBorder(javax.swing.BorderFactory.createLineBorder((new Color(0, 110, 0)), 2));
-        setLayout(new FlowLayout(FlowLayout.RIGHT, 2, 2));
+        setLayout(new FlowLayout(FlowLayout.CENTER, 2, 7));
         setBackground(new Color(0, 82, 0));
         setOpaque(true);
     }
-  
 
 }
 //    Carta[][] Tauler;

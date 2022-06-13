@@ -10,8 +10,6 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -21,20 +19,19 @@ import javax.swing.JLabel;
  * @author Carlos Lozano, Marc Llobera
  */
 public class Carta extends JLabel {
-    
+
     private final Pal pal;
     private final int num;
     JLabel carta;
-    public static final int[] tamanyCartes = {64, 108};
+    public static final int[] tamanyCartes = {62, 80};
 
     // CONSTRUCTOR
-   
     public Carta(Pal pal, int i) {
         this.pal = pal;
         this.num = i;
         carta = new JLabel();
         try {
-            BufferedImage bufferedImage = ImageIO.read(new File("Cartes/" + i + "_of_" + Pal.nomPal(pal) + ".png")); //
+            BufferedImage bufferedImage = ImageIO.read(new File("Cartes/" + i + "_of_" + Pal.nomPal(pal) + ".png"));
             Image imatge = bufferedImage.getScaledInstance(tamanyCartes[0], tamanyCartes[1], Image.SCALE_DEFAULT);
             carta.setIcon(new ImageIcon(imatge));
             carta.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
@@ -43,9 +40,21 @@ public class Carta extends JLabel {
                     + ", no s'ha pogut afegir correctament.");
         }
     }
-    
-    
-    
+
+    public Carta(String x) {
+        this.pal = null;
+        this.num = 0;
+        carta = new JLabel();
+        try {
+            BufferedImage bufferedImage = ImageIO.read(new File("Cartes/" + x + ".png"));
+            Image imatge = bufferedImage.getScaledInstance(tamanyCartes[0], tamanyCartes[1], Image.SCALE_DEFAULT);
+            carta.setIcon(new ImageIcon(imatge));
+            carta.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+            carta.setVisible(true);
+        } catch (IOException ex) {
+            System.err.print(ex.toString());
+        }
+    }
 
     public JLabel getCarta() {
         return carta;

@@ -5,8 +5,11 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -46,24 +49,19 @@ public class TREBALL_FINAL_2022 extends JFrame {
 
     private void interfici() throws IOException {
         setTitle("Pràctica Prog II - Joc del 7");
-        //setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setSize(1000, 900);
-        setResizable(false);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        setSize(tamanyFinestraD);
+        setResizable(true);
         setDefaultCloseOperation(TREBALL_FINAL_2022.EXIT_ON_CLOSE);
         contenedor = getContentPane();
-
-        FlowLayout centrado = new FlowLayout(FlowLayout.CENTER, 0, 20);
 
         /*----------------------------------------------------------------------
         --TABLERO DE JUEGO
         ----------------------------------------------------------------------*/
         //////////////////////////////JUGADORS IA///////////////////////////////
-        CasillaCarta cartesJugador1 = actualitzarMaJugador(0, null);
-        cartesJugador1.setLayout(centrado);
-        CasillaCarta cartesJugador2 = actualitzarMaJugador(0, null);
-        cartesJugador2.setLayout(centrado);
-        CasillaCarta cartesJugador3 = actualitzarMaJugador(0, null);
-        cartesJugador3.setLayout(centrado);
+        JLabel cartesJugador1 = actualitzarMaJugador(0);
+        JLabel cartesJugador2 = actualitzarMaJugador(0);
+        JLabel cartesJugador3 = actualitzarMaJugador(0);
 
         //agrupam les baralles dins un panell
         JPanel taulerJugadorsIA = new JPanel();
@@ -157,39 +155,54 @@ public class TREBALL_FINAL_2022 extends JFrame {
 //        }
 //NECESITAM SES CASILLAS PER PODER AFEGIR /LLEVAR CARTES i no me va be XD
 //SI COMENTES SA 176 I DESCOMENTES 174,175 SE VEU
-        JPanel TaulerUsuari = new JPanel();
-        TaulerUsuari.setBackground(colorTauler);
-        TaulerUsuari.setLayout(new GridLayout(2, 1, 8, 0));
-        Carta[][] cartasUsuario = new Carta[1][13];
+        GridBagConstraints restricciones = new GridBagConstraints();
+        JPanel taulerUsuari = new JPanel();
+        taulerUsuari.setBackground(colorTauler);
+        taulerUsuari.setLayout(new GridBagLayout());
 
-        JTextArea auxx = new JTextArea("\n  0");
-        
-        auxx.setLayout(new FlowLayout(FlowLayout.CENTER));
-        auxx.setForeground(Color.WHITE);
-        auxx.setFont(new Font("Arial", Font.PLAIN, 45));
-        auxx.setOpaque(false);
-        auxx.setEditable(false);
-        TaulerUsuari.add(auxx);
-        for (int j = 1; j < 13; j++) {
-            TaulerUsuari.add(new JLabel());
+//        JPanel taulerCartesUsuari = new JPanel();
+//        taulerCartesUsuari.setBackground(colorTauler);
+//        taulerCartesUsuari.setLayout(new GridLayout(1, 13, 8, 0));
+        Carta[] cartasUsuario = new Carta[13];
+        cartasUsuario[0] = new Carta(Pal.values()[1], 7);
 
-        }
-
-        CasillaCarta casilla = new CasillaCarta();
-        cartasUsuario[0][0] = new Carta(Pal.values()[1], 7);
-        casilla.add(cartasUsuario[0][0].carta);
-        TaulerUsuari.add(casilla);
+        restricciones.fill = GridBagConstraints.HORIZONTAL;
+        restricciones.anchor = GridBagConstraints.PAGE_END; //bottom of space 
+        restricciones.insets = new Insets(0, 19, 0, 0);  //top padding 
+        restricciones.gridx = 0;
+        restricciones.gridy = 1;
+        restricciones.ipady = 5;
+        restricciones.ipadx = 0;
+        restricciones.weightx = 0.1;
+        restricciones.weighty = 0;
+        taulerUsuari.add(cartasUsuario[0].carta, restricciones);
         for (int j = 1; j < 13; j++) {
             // casillasUsuario[i][j] = new CasillaCarta();
-           
-            cartasUsuario[0][j] = new Carta(Pal.values()[1], j + 1);
+            cartasUsuario[j] = new Carta(Pal.values()[1], 7);
+            restricciones.gridx = restricciones.gridx + 1;
             //cartasUsuario[i][j].setBorder(javax.swing.BorderFactory.createLineBorder((new Color(0, 110, 0)), 1));
             // casillasUsuario[i][j].add(cartasUsuario[i][j].carta);
             //  TaulerUsuari.add(casillasUsuario[i][j]);
             //  TaulerUsuari.add(casillasUsuario[i][j]);
-            TaulerUsuari.add(cartasUsuario[0][j].carta);
+            taulerUsuari.add(cartasUsuario[j].carta, restricciones);
         }
 
+        JTextArea auxx = new JTextArea("0");
+        auxx.setLayout(new FlowLayout(FlowLayout.CENTER));
+        auxx.setForeground(Color.WHITE);
+        auxx.setFont(new Font("Arial", Font.PLAIN, 35));
+        auxx.setOpaque(false);
+        auxx.setEditable(false);
+
+        restricciones.fill = GridBagConstraints.HORIZONTAL;
+        restricciones.gridx = 0;
+        restricciones.gridy = 0;
+        restricciones.ipady = 0;       //reset to default  
+        restricciones.ipadx = 0;       //reset to default  
+        restricciones.weighty = 1.0;   //request any extra vertical space  
+        restricciones.insets = new Insets(0, 39, 0, 0);  //top padding 
+        restricciones.gridwidth = 2;   //2 columns wide 
+        taulerUsuari.add(auxx, restricciones);
         ////////////////////////////////////////////////////////////////////////
 
         /*----------------------------------------------------------------------
@@ -197,35 +210,27 @@ public class TREBALL_FINAL_2022 extends JFrame {
         ----------------------------------------------------------------------*/
         JPanel menuBotons = new JPanel();
 
-        menuBotons.setLayout(
-                new FlowLayout(FlowLayout.CENTER, 10, 3));
+        menuBotons.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 3));
         JButton mescla = new JButton(" Mescla ");
 
-        mescla.setBorder(
-                new RoundedBorder(6));
+        mescla.setBorder(new RoundedBorder(6));
         menuBotons.add(mescla);
         JButton juga = new JButton("  Juga  ");
 
-        juga.setBorder(
-                new RoundedBorder(6));
+        juga.setBorder(new RoundedBorder(6));
         menuBotons.add(juga);
         JButton reinicia = new JButton("Reinicia");
 
-        reinicia.setBorder(
-                new RoundedBorder(6));
+        reinicia.setBorder(new RoundedBorder(6));
         menuBotons.add(reinicia);
 
         JTextArea texteMissatge = new JTextArea();
-
-        texteMissatge.setEditable(
-                false);
-        texteMissatge.setText(
-                "             ");
+        texteMissatge.setEditable(false);
+        texteMissatge.setText("             ");
 
         JPanel menuTotal = new JPanel();
 
-        menuTotal.setLayout(
-                new GridLayout(2, 1));
+        menuTotal.setLayout(new GridLayout(2, 1));
         menuTotal.add(menuBotons);
 
         menuTotal.add(texteMissatge);
@@ -233,7 +238,7 @@ public class TREBALL_FINAL_2022 extends JFrame {
         --DISTRIBUCIÓ
         ----------------------------------------------------------------------*/
         JSplitPane separadorIA = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-         separadorIA.setBackground(colorTauler);
+        separadorIA.setBackground(colorTauler);
         JSplitPane separadorTablero = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         separadorTablero.setBackground(colorTauler);
         JSplitPane separadorMenu = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
@@ -243,20 +248,17 @@ public class TREBALL_FINAL_2022 extends JFrame {
 
         separadorIA.setBottomComponent(taulerBaralla);
 
-        separadorIA.setDividerSize(
-                5);
+        separadorIA.setDividerSize(0);
         separadorTablero.setTopComponent(taulerBaralla);
 
-        separadorTablero.setBottomComponent(TaulerUsuari);
+        separadorTablero.setBottomComponent(taulerUsuari);
 
-        separadorTablero.setDividerSize(
-                5);
-        separadorMenu.setTopComponent(TaulerUsuari);
+        separadorTablero.setDividerSize(0);
+        separadorMenu.setTopComponent(taulerUsuari);
 
         separadorMenu.setBottomComponent(menuTotal);
 
-        separadorMenu.setDividerSize(
-                5);
+        separadorMenu.setDividerSize(1);
 
         contenedor.add(separadorIA, BorderLayout.NORTH);
 
@@ -264,22 +266,28 @@ public class TREBALL_FINAL_2022 extends JFrame {
 
         contenedor.add(separadorMenu, BorderLayout.SOUTH);
 
-        setVisible(
-                true);
+        //pack();
+        setVisible(true);
     }
 
-    private CasillaCarta actualitzarMaJugador(int cartesRestants, BufferedImage bufferedImage) {
-        CasillaCarta aux = new CasillaCarta();
-        if (bufferedImage != null) {
-            Image imatge = bufferedImage.getScaledInstance(Carta.tamanyCartes[0] + 20, Carta.tamanyCartes[1], Image.SCALE_DEFAULT);
-            aux.setIcon(new ImageIcon(imatge));
+    private JLabel actualitzarMaJugador(int cartesRestants) {
+        JLabel aux = new JLabel();
+        try {
+            BufferedImage bufferedImage = ImageIO.read(new File("Cartes/fondo_casella.png"));
+            if (bufferedImage != null) {
+                Image imatge = bufferedImage.getScaledInstance(Carta.tamanyCartes[0] + 20, Carta.tamanyCartes[1], Image.SCALE_DEFAULT);
+                aux.setIcon(new ImageIcon(imatge));
+            }
+            aux.setLayout(new FlowLayout(FlowLayout.LEFT, 33, 25));
+            JTextArea text_Jugador = new JTextArea(String.valueOf(cartesRestants));
+            text_Jugador.setForeground(Color.WHITE);
+            text_Jugador.setFont(new Font("Arial", Font.PLAIN, 30));
+            text_Jugador.setOpaque(false);
+            text_Jugador.setEditable(false);
+            aux.add(text_Jugador);
+        } catch (IOException ex) {
+            Logger.getLogger(TREBALL_FINAL_2022.class.getName()).log(Level.SEVERE, null, ex);
         }
-        JTextArea text_Jugador = new JTextArea(String.valueOf(cartesRestants));
-        text_Jugador.setForeground(Color.WHITE);
-        text_Jugador.setFont(new Font("Arial", Font.PLAIN, 55));
-        text_Jugador.setOpaque(false);
-        text_Jugador.setEditable(false);
-        aux.add(text_Jugador);
         return aux;
     }
 
