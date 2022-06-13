@@ -59,9 +59,9 @@ public class TREBALL_FINAL_2022 extends JFrame {
         --TABLERO DE JUEGO
         ----------------------------------------------------------------------*/
         //////////////////////////////JUGADORS IA///////////////////////////////
-        JLabel cartesJugador1 = actualitzarMaJugador(0);
-        JLabel cartesJugador2 = actualitzarMaJugador(0);
-        JLabel cartesJugador3 = actualitzarMaJugador(0);
+        JLabel cartesJugador1 = actualitzarMaJugadorIA(0, "fondo_casella");
+        JLabel cartesJugador2 = actualitzarMaJugadorIA(0, "fondo_casella");
+        JLabel cartesJugador3 = actualitzarMaJugadorIA(0, "fondo_casella");
 
         //agrupam les baralles dins un panell
         JPanel taulerJugadorsIA = new JPanel();
@@ -70,7 +70,10 @@ public class TREBALL_FINAL_2022 extends JFrame {
         //cream un panell auxiliar que ajuda a mantenir el tamany de la finestra
         //a més de la colocació de les casilles de la IA correctament
         JLabel aux = new JLabel();
-        aux.setIcon(new ImageIcon(ImageIO.read(new File("Cartes/card_back_blue.png")).getScaledInstance(Carta.tamanyCartes[0] + 20, Carta.tamanyCartes[1], Image.SCALE_DEFAULT)));
+        aux.setIcon(new ImageIcon(ImageIO.read(
+                new File("Cartes/card_back_blue.png"))
+                .getScaledInstance(Carta.tamanyCartes[0] + 20,
+                        Carta.tamanyCartes[1], Image.SCALE_DEFAULT)));
         aux.setVisible(false);
 
         taulerJugadorsIA.add(aux);
@@ -153,22 +156,17 @@ public class TREBALL_FINAL_2022 extends JFrame {
 //            casillasUsuario[i] = new CasillaCarta();
 //            TaulerUsuari.add(casillasUsuario[i]);
 //        }
-//NECESITAM SES CASILLAS PER PODER AFEGIR /LLEVAR CARTES i no me va be XD
-//SI COMENTES SA 176 I DESCOMENTES 174,175 SE VEU
         GridBagConstraints restricciones = new GridBagConstraints();
         JPanel taulerUsuari = new JPanel();
         taulerUsuari.setBackground(colorTauler);
         taulerUsuari.setLayout(new GridBagLayout());
 
-//        JPanel taulerCartesUsuari = new JPanel();
-//        taulerCartesUsuari.setBackground(colorTauler);
-//        taulerCartesUsuari.setLayout(new GridLayout(1, 13, 8, 0));
         Carta[] cartasUsuario = new Carta[13];
-        cartasUsuario[0] = new Carta(Pal.values()[1], 7);
+        cartasUsuario[0] = new Carta(true);
 
         restricciones.fill = GridBagConstraints.HORIZONTAL;
-        restricciones.anchor = GridBagConstraints.PAGE_END; //bottom of space 
-        restricciones.insets = new Insets(0, 19, 0, 0);  //top padding 
+        restricciones.anchor = GridBagConstraints.PAGE_END;
+        restricciones.insets = new Insets(0, 19, 0, 0);
         restricciones.gridx = 0;
         restricciones.gridy = 1;
         restricciones.ipady = 5;
@@ -176,14 +174,10 @@ public class TREBALL_FINAL_2022 extends JFrame {
         restricciones.weightx = 0.1;
         restricciones.weighty = 0;
         taulerUsuari.add(cartasUsuario[0].carta, restricciones);
+
         for (int j = 1; j < 13; j++) {
-            // casillasUsuario[i][j] = new CasillaCarta();
-            cartasUsuario[j] = new Carta(Pal.values()[1], 7);
+            cartasUsuario[j] = new Carta(false);
             restricciones.gridx = restricciones.gridx + 1;
-            //cartasUsuario[i][j].setBorder(javax.swing.BorderFactory.createLineBorder((new Color(0, 110, 0)), 1));
-            // casillasUsuario[i][j].add(cartasUsuario[i][j].carta);
-            //  TaulerUsuari.add(casillasUsuario[i][j]);
-            //  TaulerUsuari.add(casillasUsuario[i][j]);
             taulerUsuari.add(cartasUsuario[j].carta, restricciones);
         }
 
@@ -197,11 +191,11 @@ public class TREBALL_FINAL_2022 extends JFrame {
         restricciones.fill = GridBagConstraints.HORIZONTAL;
         restricciones.gridx = 0;
         restricciones.gridy = 0;
-        restricciones.ipady = 0;       //reset to default  
-        restricciones.ipadx = 0;       //reset to default  
-        restricciones.weighty = 1.0;   //request any extra vertical space  
-        restricciones.insets = new Insets(0, 39, 0, 0);  //top padding 
-        restricciones.gridwidth = 2;   //2 columns wide 
+        restricciones.ipady = 0;
+        restricciones.ipadx = 0;
+        restricciones.weighty = 1.0;
+        restricciones.insets = new Insets(0, 39, 0, 0);
+        restricciones.gridwidth = 2;
         taulerUsuari.add(auxx, restricciones);
         ////////////////////////////////////////////////////////////////////////
 
@@ -270,10 +264,10 @@ public class TREBALL_FINAL_2022 extends JFrame {
         setVisible(true);
     }
 
-    private JLabel actualitzarMaJugador(int cartesRestants) {
+    private JLabel actualitzarMaJugadorIA(int cartesRestants, String x) {
         JLabel aux = new JLabel();
         try {
-            BufferedImage bufferedImage = ImageIO.read(new File("Cartes/fondo_casella.png"));
+            BufferedImage bufferedImage = ImageIO.read(new File("Cartes/" + x + ".png"));
             if (bufferedImage != null) {
                 Image imatge = bufferedImage.getScaledInstance(Carta.tamanyCartes[0] + 20, Carta.tamanyCartes[1], Image.SCALE_DEFAULT);
                 aux.setIcon(new ImageIcon(imatge));
@@ -300,7 +294,7 @@ public class TREBALL_FINAL_2022 extends JFrame {
         for (int i = 0; i < 4; i++) {
             jugadors[i] = new Jugador(i + 1);
             for (int k = 0; k < numCartes; k++) {
-                RepartirCartes(jugadors[i], bar);
+                repartirCarta(jugadors[i], bar);
             }
         }
         //imprimim els jugadors amb les cartes corresponents
@@ -323,7 +317,7 @@ public class TREBALL_FINAL_2022 extends JFrame {
         }
     }
 
-    private void RepartirCartes(Jugador jug, Baralla bara) {
+    private void repartirCarta(Jugador jug, Baralla bara) {
         try {
             jug.asignarCarta(bara.agafaCarta());
         } catch (Baralla.NohihaCartes ex) {

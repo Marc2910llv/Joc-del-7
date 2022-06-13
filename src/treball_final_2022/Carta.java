@@ -41,16 +41,16 @@ public class Carta extends JLabel {
         }
     }
 
-    public Carta(String x) {
+    public Carta(boolean visible) {
         this.pal = null;
         this.num = 0;
         carta = new JLabel();
         try {
-            BufferedImage bufferedImage = ImageIO.read(new File("Cartes/" + x + ".png"));
+            BufferedImage bufferedImage = ImageIO.read(new File("Cartes/fondo_casella.png"));
             Image imatge = bufferedImage.getScaledInstance(tamanyCartes[0], tamanyCartes[1], Image.SCALE_DEFAULT);
             carta.setIcon(new ImageIcon(imatge));
             carta.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-            carta.setVisible(true);
+            carta.setVisible(visible);
         } catch (IOException ex) {
             System.err.print(ex.toString());
         }
