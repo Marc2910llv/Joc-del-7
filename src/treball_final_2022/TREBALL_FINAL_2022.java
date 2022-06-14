@@ -42,16 +42,17 @@ public class TREBALL_FINAL_2022 extends JFrame {
     Tauler tauler;
     Baralla baralla;
     CasillaCarta[][] casillas;
-    Carta[][] cartas ;
-    public static void main(String[] args) {
-        try {
-            new TREBALL_FINAL_2022().interfici();
-        } catch (IOException ex) {
-            Logger.getLogger(TREBALL_FINAL_2022.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    Carta[][] cartas;
+
+    JPanel taulerBaralla = new JPanel();
+
+    Integer numeroArriba = 0;
+
+    public static void main(String[] args) throws IOException, Baralla.NohihaCartes {
+        new TREBALL_FINAL_2022().interfici();
     }
 
-    private void interfici() throws IOException {
+    private void interfici() throws IOException, Baralla.NohihaCartes {
         setTitle("Pràctica Prog II - Joc del 7");
         //  setExtendedState(JFrame.MAXIMIZED_BOTH);
         setSize(1000, 680);
@@ -88,38 +89,36 @@ public class TREBALL_FINAL_2022 extends JFrame {
         ////////////////////////////////////////////////////////////////////////
 
         ///////////////////////////TAULER - BARALLA/////////////////////////////
+        tableroMezclado(false);
         //Ordre: TREBOLS, DIAMANTS, CORS, PIQUES
         //inicialitzam tauler amb la baralla
-        JPanel taulerBaralla = new JPanel();
-        taulerBaralla.setBackground(colorTauler);
-        taulerBaralla.setLayout(new GridLayout(4, 13));
-        casillas = new CasillaCarta[4][13];
-        cartas = new Carta[4][13];
         //inicialitzam cartes
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 13; j++) {
-                cartas[i][j] = new Carta(Pal.values()[i], j + 1);
-            }
-        }
-
-        //mostram el tauler inicial
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 13; j++) {
-                casillas[i][j] = new CasillaCarta();
-                taulerBaralla.add(casillas[i][j]);
-            }
-        }
-
-        //añadir cartas a las casillas del tablero
-        Tauler t = new Tauler();
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 13; j++) {
-                // if (t.colocarCarta(cartas[i][j])) {
-                casillas[i][j].add(cartas[i][j].carta);
-                // }
-            }
-        }
-
+//        for (int i = 0; i < 4; i++) {
+//            for (int j = 0; j < 13; j++) {
+//                cartas[i][j] = new Carta(Pal.values()[i], j + 1);
+//                casillas[i][j] = new CasillaCarta();
+//                casillas[i][j].add(cartas[i][j].getCarta());
+//                taulerBaralla.add(casillas[i][j]);
+//
+//            }
+//        }
+//
+//        //mostram el tauler inicial
+//        for (int i = 0; i < 4; i++) {
+//            for (int j = 0; j < 13; j++) {
+//
+//            }
+//        }
+//
+//        //añadir cartas a las casillas del tablero
+//        Tauler t = new Tauler();
+//        for (int i = 0; i < 4; i++) {
+//            for (int j = 0; j < 13; j++) {
+//                // if (t.colocarCarta(cartas[i][j])) {
+//
+//                // }
+//            }
+//        }
         //MEZCLAR cartas[][] y añadir otra vez
         //NO BORRAR NI TOCAR, després vorem si mhos va be
         //obtener baraja de cada jugador después de mezclar
@@ -185,7 +184,7 @@ public class TREBALL_FINAL_2022 extends JFrame {
             taulerUsuari.add(cartasUsuario[j].carta, restricciones);
         }
 
-        JTextArea auxx = new JTextArea("0");
+        JTextArea auxx = new JTextArea(String.valueOf(numeroArriba));
         auxx.setLayout(new FlowLayout(FlowLayout.CENTER));
         auxx.setForeground(Color.WHITE);
         auxx.setFont(new Font("Arial", Font.PLAIN, 35));
@@ -209,7 +208,7 @@ public class TREBALL_FINAL_2022 extends JFrame {
         JPanel menuBotons = new JPanel();
 
         menuBotons.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 3));
-        JButton mescla = new JButton(" Mescla ");
+        JButton mescla = new JButton("Mescla");
         mescla.addActionListener(gestorEventos);
         mescla.setBorder(new RoundedBorder(6));
         menuBotons.add(mescla);
@@ -273,14 +272,47 @@ public class TREBALL_FINAL_2022 extends JFrame {
         --MÉTODOS
         ----------------------------------------------------------------------*/
     private void mezclarCartas() throws Baralla.NohihaCartes {
-        Baralla b = new Baralla();
-        b.mescla();
+
         casillas = new CasillaCarta[4][13];
         cartas = new Carta[4][13];
+        taulerBaralla.setBackground(colorTauler);
+        taulerBaralla.setLayout(new GridLayout(4, 13));
+        Baralla b = new Baralla();
+        b.mescla();
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 13; j++) {
-                casillas[i][j].remove(cartas[i][j].getCarta());
-                casillas[i][j].add(b.agafaCarta().getCarta());
+                cartas[i][j] = new Carta(Pal.values()[i], 0);
+                casillas[i][j] = new CasillaCarta();
+                casillas[i][j].add(cartas[i][j].getCarta());
+                taulerBaralla.add(casillas[i][j]);
+
+            }
+        }
+    }
+
+    private void tableroMezclado(boolean mezclado) throws Baralla.NohihaCartes {
+        casillas = new CasillaCarta[4][13];
+        cartas = new Carta[4][13];
+        taulerBaralla.setBackground(colorTauler);
+        taulerBaralla.setLayout(new GridLayout(4, 13));
+        
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 13; j++) {
+                cartas[i][j] = new Carta(Pal.values()[i], j + 1);
+                casillas[i][j] = new CasillaCarta();
+                casillas[i][j].add(cartas[i][j].getCarta());
+                taulerBaralla.add(casillas[i][j]);
+            }
+        }
+        if (mezclado) {
+            Baralla b = new Baralla();
+            b.mescla();
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 13; j++) {
+                    casillas[i][j].remove(cartas[i][j].getCarta());
+                    casillas[i][j].add(b.agafaCarta().getCarta());
+
+                }
             }
         }
     }
@@ -315,12 +347,11 @@ public class TREBALL_FINAL_2022 extends JFrame {
             switch (evento.getActionCommand()) {
                 case "Mescla": {
                     try {
-                        mezclarCartas();
+                        tableroMezclado(true);
                     } catch (Baralla.NohihaCartes ex) {
                         Logger.getLogger(TREBALL_FINAL_2022.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                //  repaint();
                 break;
 
                 case "Juga":
