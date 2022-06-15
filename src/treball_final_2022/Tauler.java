@@ -12,7 +12,7 @@ package treball_final_2022;
 public class Tauler {
 
     //ATRIBUTS
-    private final Carta[][] tauler;
+    public final Carta[][] tauler;
     private final int files = 4;
     private final int columnes = 13;
 
@@ -20,8 +20,7 @@ public class Tauler {
     public Tauler() {
         tauler = new Carta[files][columnes];
     }
-    
-    
+
     public boolean colocarCarta(Carta carta) {
         int fila = 0, columna;
         switch (carta.getPal()) {
@@ -41,38 +40,39 @@ public class Tauler {
         columna = carta.getNum() - 1;
 
         if (carta.getNum() == 7) {
+            tauler[fila][columna] = carta;
             return true;
         }
         if (columna == 0) {
             if (tauler[fila][columna + 1] != null) {
                 if (tauler[fila][columna + 1].getNum() == 2) {
                     tauler[fila][columna] = carta;
+                    return true;
                 }
             }
             return false;
-        } 
+        }
         if (columna == 12) {
             if (tauler[fila][columna - 1] != null) {
                 if (tauler[fila][columna - 1].getNum() == 12) {
                     tauler[fila][columna] = carta;
+                    return true;
                 }
             }
             return false;
-        } 
+        }
         if (tauler[fila][columna - 1] != null) {
             if (tauler[fila][columna - 1].getNum() < carta.getNum()) {
                 tauler[fila][columna] = carta;
+                return true;
             }
         } else if (tauler[fila][columna + 1] != null) {
             if (tauler[fila][columna + 1].getNum() > carta.getNum()) {
                 tauler[fila][columna] = carta;
+                return true;
             }
         }
         return false;
-    }
-
-    public Carta[][] getTauler() {
-        return tauler;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class Tauler {
         for (int n = 0; n < files; n++) {
             s += Pal.values()[n];
             for (int m = 0; m < columnes; m++) {
-                if (tauler[n][m] == null) {
+                if (tauler[n][m].getPal() != null) {
                     s += "[     ]";
                 } else {
                     s += tauler[n][m].toString();

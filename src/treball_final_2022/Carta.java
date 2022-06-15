@@ -56,10 +56,6 @@ public class Carta extends JLabel {
         }
     }
 
-    public JLabel getCarta() {
-        return carta;
-    }
-
     @Override
     public String toString() {
         if (num <= 10) {

@@ -22,7 +22,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
@@ -35,24 +34,31 @@ public class TREBALL_FINAL_2022 extends JFrame {
 
     private Container contenedor;
     private final Color colorTauler = new Color(0, 110, 0);
+    private JButton mescla, juga, reinicia, passa, tornJugador;
+    private final JLabel[] cartesJugadorIA = new JLabel[3];
+    private final JPanel taulerUsuari = new JPanel();
+    private final JPanel taulerBaralla = new JPanel();
+    private JPanel menuBotons;
+    private final JPanel menuTotal = new JPanel();
+    private final JSplitPane separadorIA = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    private final JSplitPane separadorTablero = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    private final JSplitPane separadorMenu = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    private final JTextArea texteMissatge = new JTextArea();
 
+    private final Jugador[] jugadorsIA = new Jugador[3];
+    private final Jugador jugadorUsuari = new Jugador();
+    private Carta[] cartesUsuari;
     private boolean acabat;
     private final int numCartes = 13;
-    private final Jugador[] jugadors = new Jugador[4];
-    Tauler tauler;
-    Baralla baralla;
-    CasillaCarta[][] casillas;
-    Carta[][] cartas;
+    public Tauler tauler;
+    private Baralla baralla;
+    private int tornIA = 0;
 
-    JPanel taulerBaralla = new JPanel();
-
-    Integer numeroArriba = 0;
-
-    public static void main(String[] args) throws IOException, Baralla.NohihaCartes {
+    public static void main(String[] args) throws IOException {
         new TREBALL_FINAL_2022().interfici();
     }
 
-    private void interfici() throws IOException, Baralla.NohihaCartes {
+    private void interfici() throws IOException {
         setTitle("Pràctica Prog II - Joc del 7");
         //  setExtendedState(JFrame.MAXIMIZED_BOTH);
         setSize(1000, 680);
@@ -64,9 +70,15 @@ public class TREBALL_FINAL_2022 extends JFrame {
         --TABLERO DE JUEGO
         ----------------------------------------------------------------------*/
         //////////////////////////////JUGADORS IA///////////////////////////////
-        JLabel cartesJugador1 = actualitzarMaJugadorIA(0, "fondo_casella");
-        JLabel cartesJugador2 = actualitzarMaJugadorIA(0, "fondo_casella");
-        JLabel cartesJugador3 = actualitzarMaJugadorIA(0, "fondo_casella");
+        cartesJugadorIA[0] = new JLabel();
+        actualitzarMaJugadorIA(0, "fondo_casella", cartesJugadorIA[0]);
+        jugadorsIA[0] = new Jugador();
+        cartesJugadorIA[1] = new JLabel();
+        actualitzarMaJugadorIA(0, "fondo_casella", cartesJugadorIA[1]);
+        jugadorsIA[1] = new Jugador();
+        cartesJugadorIA[2] = new JLabel();
+        actualitzarMaJugadorIA(0, "fondo_casella", cartesJugadorIA[2]);
+        jugadorsIA[2] = new Jugador();
 
         //agrupam les baralles dins un panell
         JPanel taulerJugadorsIA = new JPanel();
@@ -82,152 +94,117 @@ public class TREBALL_FINAL_2022 extends JFrame {
         aux.setVisible(false);
 
         taulerJugadorsIA.add(aux);
-        taulerJugadorsIA.add(cartesJugador1);
-        taulerJugadorsIA.add(cartesJugador2);
-        taulerJugadorsIA.add(cartesJugador3);
+        taulerJugadorsIA.add(cartesJugadorIA[0]);
+        taulerJugadorsIA.add(cartesJugadorIA[1]);
+        taulerJugadorsIA.add(cartesJugadorIA[2]);
         taulerJugadorsIA.add(new JLabel());
-        ////////////////////////////////////////////////////////////////////////
 
         ///////////////////////////TAULER - BARALLA/////////////////////////////
-        tableroMezclado(false);
-        //Ordre: TREBOLS, DIAMANTS, CORS, PIQUES
-        //inicialitzam tauler amb la baralla
-        //inicialitzam cartes
-//        for (int i = 0; i < 4; i++) {
-//            for (int j = 0; j < 13; j++) {
-//                cartas[i][j] = new Carta(Pal.values()[i], j + 1);
-//                casillas[i][j] = new CasillaCarta();
-//                casillas[i][j].add(cartas[i][j].getCarta());
-//                taulerBaralla.add(casillas[i][j]);
-//
-//            }
-//        }
-//
-//        //mostram el tauler inicial
-//        for (int i = 0; i < 4; i++) {
-//            for (int j = 0; j < 13; j++) {
-//
-//            }
-//        }
-//
-//        //añadir cartas a las casillas del tablero
-//        Tauler t = new Tauler();
-//        for (int i = 0; i < 4; i++) {
-//            for (int j = 0; j < 13; j++) {
-//                // if (t.colocarCarta(cartas[i][j])) {
-//
-//                // }
-//            }
-//        }
-        //MEZCLAR cartas[][] y añadir otra vez
-        //NO BORRAR NI TOCAR, després vorem si mhos va be
-        //obtener baraja de cada jugador después de mezclar
-//        Carta[] BarajaUsuario = new Carta[13];
-//        Carta[] BarajaJug1 = new Carta[13];
-//        Carta[] BarajaJug2 = new Carta[13];
-//        Carta[] BarajaJug3 = new Carta[13];
-//        Carta aux2 ;
-//        for (int i = 0; i < 4; i++) {
-//            for (int j = 0; j < 13; j++) {
-//              aux2 = new Carta(cartas[i][j].getPal(), cartas[i][j].getNum());
-//              
-//                if (i == 0) {
-//                    BarajaUsuario[j] = new Carta(Pal.values()[i],j+1);
-//                    BarajaUsuario[j].add(aux2);
-//                } else if (i == 1) {
-//                    BarajaJug1[j] = new Carta(Pal.values()[i],j+1);
-//                    BarajaJug1[j].add(aux2);
-//                } else if (i == 2) {
-//                    BarajaJug2[j] = new Carta(Pal.values()[i],j+1);
-//                    BarajaJug2[j].add(aux2);
-//                } else if (i == 3) {
-//                    BarajaJug3[j] = new Carta(Pal.values()[i],j+1);
-//                    BarajaJug3[j].add(aux2);
-//                }
-//            }
-//        }
-        ////////////////////////////////////////////////////////////////////////
+        taulerBaralla.setBackground(colorTauler);
+        taulerBaralla.setLayout(new GridLayout(4, 13));
+        tauler = new Tauler();
+        baralla = new Baralla();
+        mostrarTaulerMesclat(false);
+
         ////////////////////////////JUGADOR USUARI//////////////////////////////
-        //NO BORRAR
-        // en teoria sobren ses casillas; 
-//        for (int i = 0; i < BarajaJug1.length; i++) {
-//            casillasUsuario[i] = new CasillaCarta();
-//            TaulerUsuari.add(casillasUsuario[i]);
-//            casillasUsuario[i].add(BarajaJug1[i].getCarta());
-//        }
-//        for (int i = 0; i < 13; i++) {
-//            casillasUsuario[i] = new CasillaCarta();
-//            TaulerUsuari.add(casillasUsuario[i]);
-//        }
-        GridBagConstraints restricciones = new GridBagConstraints();
-        JPanel taulerUsuari = new JPanel();
+        Carta[] v = new Carta[13];
+        v[0] = new Carta(true);
+        for (int i = 1; i < v.length; i++) {
+            v[i] = new Carta(false);
+        }
         taulerUsuari.setBackground(colorTauler);
         taulerUsuari.setLayout(new GridBagLayout());
-
-        Carta[] cartasUsuario = new Carta[13];
-        cartasUsuario[0] = new Carta(true);
-
-        restricciones.fill = GridBagConstraints.HORIZONTAL;
-        restricciones.anchor = GridBagConstraints.PAGE_END;
-        restricciones.insets = new Insets(0, 19, 0, 0);
-        restricciones.gridx = 0;
-        restricciones.gridy = 1;
-        restricciones.ipady = 5;
-        restricciones.ipadx = 0;
-        restricciones.weightx = 0.1;
-        restricciones.weighty = 0;
-        taulerUsuari.add(cartasUsuario[0].carta, restricciones);
-
-        for (int j = 1; j < 13; j++) {
-            cartasUsuario[j] = new Carta(false);
-            restricciones.gridx = restricciones.gridx + 1;
-            taulerUsuari.add(cartasUsuario[j].carta, restricciones);
-        }
-
-        JTextArea auxx = new JTextArea(String.valueOf(numeroArriba));
-        auxx.setLayout(new FlowLayout(FlowLayout.CENTER));
-        auxx.setForeground(Color.WHITE);
-        auxx.setFont(new Font("Arial", Font.PLAIN, 35));
-        auxx.setOpaque(false);
-        auxx.setEditable(false);
-
-        restricciones.fill = GridBagConstraints.HORIZONTAL;
-        restricciones.gridx = 0;
-        restricciones.gridy = 0;
-        restricciones.ipady = 0;
-        restricciones.ipadx = 0;
-        restricciones.weighty = 1.0;
-        restricciones.insets = new Insets(0, 39, 0, 0);
-        restricciones.gridwidth = 2;
-        taulerUsuari.add(auxx, restricciones);
+        actualitzarMaJugadorUsuari(0, v);
         ////////////////////////////////////////////////////////////////////////
 
         /*----------------------------------------------------------------------
         --MENU INFERIOR
         ----------------------------------------------------------------------*/
-        JPanel menuBotons = new JPanel();
 
-        menuBotons.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 3));
-        JButton mescla = new JButton("Mescla");
+ /*-----------------------------------------------------------------------------
+        --GESTIÓ D'EVENTS
+        ----------------------------------------------------------------------*/
+        ActionListener gestorEventos = (ActionEvent evento) -> {
+            switch (evento.getActionCommand()) {
+                case "Mescla": {
+                    mostrarTaulerMesclat(true);
+                    juga.setEnabled(true);
+                    reinicia.setEnabled(true);
+                    break;
+                }
+                case "Juga": {
+                    tauler = new Tauler();
+                    iniciJoc();
+                    mostrarMenuCorresponent(passa, null);
+                    break;
+                }
+                case "Reinicia": {
+                    try {
+                        new TREBALL_FINAL_2022().interfici();
+                    } catch (IOException ex) {
+                        Logger.getLogger(TREBALL_FINAL_2022.class.getName())
+                                .log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                }
+                case "Passa": {
+                    actualitzarText("Has passat");
+                    mostrarMenuCorresponent(tornJugador, null);
+                    break;
+                }
+                case "Torn Jugador": {
+                    Carta posada = jugadorsIA[tornIA].treureCarta(tauler);
+                    actualitzarMaJugadorIA(jugadorsIA[tornIA].getNumCartas(),
+                            "card_back_blue", cartesJugadorIA[tornIA]);
+                    if (jugadorsIA[tornIA].getNumCartas() == 0) {
+                        acabat = true;
+                    }
+                    tornIA++;
+                    if (posada != null) {
+                        actualitzarText("El Jugador " + tornIA + " ha posat el " + posada.toString());
+                    } else {
+                        actualitzarText("El Jugador" + tornIA + " passa");
+                    }
+                    if (tornIA == 3) {
+                        tornIA = 0;
+                        mostrarMenuCorresponent(passa, null);
+                    }
+                    actualitzarTauler(tauler.tauler);
+                    break;
+                }
+
+            }
+        };
+
+        menuBotons = new JPanel();
+
+        mescla = new JButton("Mescla");
         mescla.addActionListener(gestorEventos);
         mescla.setBorder(new RoundedBorder(6));
-        menuBotons.add(mescla);
 
-        JButton juga = new JButton("  Juga  ");
+        juga = new JButton("Juga");
         juga.addActionListener(gestorEventos);
         juga.setBorder(new RoundedBorder(6));
-        menuBotons.add(juga);
+        juga.setEnabled(false);
 
-        JButton reinicia = new JButton("Reinicia");
+        reinicia = new JButton("Reinicia");
         reinicia.addActionListener(gestorEventos);
         reinicia.setBorder(new RoundedBorder(6));
-        menuBotons.add(reinicia);
+        reinicia.setEnabled(false);
 
-        JTextArea texteMissatge = new JTextArea();
-        texteMissatge.setEditable(false);
-        texteMissatge.setText("             ");
+        passa = new JButton("Passa");
+        passa.addActionListener(gestorEventos);
+        passa.setBorder(new RoundedBorder(6));
 
-        JPanel menuTotal = new JPanel();
+        tornJugador = new JButton("Torn Jugador");
+        tornJugador.addActionListener(gestorEventos);
+        tornJugador.setBorder(new RoundedBorder(6));
+
+        mostrarMenuCorresponent(mescla, juga);
+
+        texteMissatge.setFocusable(false);
+        texteMissatge.setText("Abans de jugar cal mesclar la baralla");
+
         menuTotal.setLayout(new GridLayout(2, 1));
         menuTotal.add(menuBotons);
         menuTotal.add(texteMissatge);
@@ -235,11 +212,8 @@ public class TREBALL_FINAL_2022 extends JFrame {
         /*----------------------------------------------------------------------
         --DISTRIBUCIÓ
         ----------------------------------------------------------------------*/
-        JSplitPane separadorIA = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         separadorIA.setBackground(colorTauler);
-        JSplitPane separadorTablero = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         separadorTablero.setBackground(colorTauler);
-        JSplitPane separadorMenu = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         separadorMenu.setBackground(colorTauler);
 
         separadorIA.setTopComponent(taulerJugadorsIA);
@@ -264,151 +238,164 @@ public class TREBALL_FINAL_2022 extends JFrame {
 
         contenedor.add(separadorMenu, BorderLayout.SOUTH);
 
-        //pack();
         setVisible(true);
     }
 
     /*----------------------------------------------------------------------
-        --MÉTODOS
+        --MÈTODES
         ----------------------------------------------------------------------*/
-    private void mezclarCartas() throws Baralla.NohihaCartes {
-
-        casillas = new CasillaCarta[4][13];
-        cartas = new Carta[4][13];
-        taulerBaralla.setBackground(colorTauler);
-        taulerBaralla.setLayout(new GridLayout(4, 13));
-        Baralla b = new Baralla();
-        b.mescla();
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 13; j++) {
-                cartas[i][j] = new Carta(Pal.values()[i], 0);
-                casillas[i][j] = new CasillaCarta();
-                casillas[i][j].add(cartas[i][j].getCarta());
-                taulerBaralla.add(casillas[i][j]);
-
-            }
-        }
+    private void actualitzarText(String a) {
+        texteMissatge.setText(a);
+        contenedor.repaint();
     }
 
-    private void tableroMezclado(boolean mezclado) throws Baralla.NohihaCartes {
-        casillas = new CasillaCarta[4][13];
-        cartas = new Carta[4][13];
-        taulerBaralla.setBackground(colorTauler);
-        taulerBaralla.setLayout(new GridLayout(4, 13));
-        
+    private void actualitzarTauler(Carta[][] c) {
+        taulerBaralla.removeAll();
+        separadorIA.setBottomComponent(taulerBaralla);
+        separadorTablero.setTopComponent(taulerBaralla);
+
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 13; j++) {
-                cartas[i][j] = new Carta(Pal.values()[i], j + 1);
-                casillas[i][j] = new CasillaCarta();
-                casillas[i][j].add(cartas[i][j].getCarta());
-                taulerBaralla.add(casillas[i][j]);
-            }
-        }
-        if (mezclado) {
-            Baralla b = new Baralla();
-            b.mescla();
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 13; j++) {
-                    casillas[i][j].remove(cartas[i][j].getCarta());
-                    casillas[i][j].add(b.agafaCarta().getCarta());
-
+                if (c[i][j] == null) {
+                    taulerBaralla.add(new CasillaCarta());
+                } else {
+                    taulerBaralla.add(new CasillaCarta(c[i][j].carta));
                 }
             }
         }
+
+        contenedor.repaint();
     }
 
-    private JLabel actualitzarMaJugadorIA(int cartesRestants, String x) {
-        JLabel aux = new JLabel();
+    private void mostrarTaulerMesclat(boolean mezclado) {
+        taulerBaralla.removeAll();
+        separadorIA.setBottomComponent(taulerBaralla);
+        separadorTablero.setTopComponent(taulerBaralla);
+        if (mezclado) {
+            baralla.mescla();
+            Carta[] cartesBaralla = baralla.getB();
+            int index = 0;
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 13; j++) {
+                    taulerBaralla.add(new CasillaCarta(cartesBaralla[index].carta));
+                    index++;
+                }
+            }
+            actualitzarText("La baralla està mesclada");
+        } else {
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 13; j++) {
+                    taulerBaralla.add(new CasillaCarta(new Carta(Pal.values()[i],
+                            j + 1).carta));
+                }
+            }
+        }
+        contenedor.repaint();
+    }
+
+    private void actualitzarMaJugadorIA(int cartesRestants, String x, JLabel aux) {
+        aux.removeAll();
         try {
-            BufferedImage bufferedImage = ImageIO.read(new File("Cartes/" + x + ".png"));
+            BufferedImage bufferedImage = ImageIO.read(new File("Cartes/" + x
+                    + ".png"));
             if (bufferedImage != null) {
-                Image imatge = bufferedImage.getScaledInstance(Carta.tamanyCartes[0] + 20, Carta.tamanyCartes[1], Image.SCALE_DEFAULT);
+                Image imatge = bufferedImage.getScaledInstance(
+                        Carta.tamanyCartes[0] + 20, Carta.tamanyCartes[1],
+                        Image.SCALE_DEFAULT);
                 aux.setIcon(new ImageIcon(imatge));
             }
-            aux.setLayout(new FlowLayout(FlowLayout.LEFT, 33, 25));
+            aux.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
             JTextArea text_Jugador = new JTextArea(String.valueOf(cartesRestants));
             text_Jugador.setForeground(Color.WHITE);
-            text_Jugador.setFont(new Font("Arial", Font.PLAIN, 30));
+            text_Jugador.setFont(new Font("Arial", Font.CENTER_BASELINE, 55));
             text_Jugador.setOpaque(false);
             text_Jugador.setEditable(false);
             aux.add(text_Jugador);
         } catch (IOException ex) {
-            Logger.getLogger(TREBALL_FINAL_2022.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TREBALL_FINAL_2022.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
-        return aux;
+        contenedor.repaint();
     }
 
-    /*----------------------------------------------------------------------
-        --GESTIÓ D'EVENTS
-        ----------------------------------------------------------------------*/
-    ActionListener gestorEventos = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent evento) {
-            switch (evento.getActionCommand()) {
-                case "Mescla": {
-                    try {
-                        tableroMezclado(true);
-                    } catch (Baralla.NohihaCartes ex) {
-                        Logger.getLogger(TREBALL_FINAL_2022.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-                break;
+    private void actualitzarMaJugadorUsuari(int cartesRestants, Carta[] c) {
+        taulerUsuari.removeAll();
+        separadorTablero.setBottomComponent(taulerUsuari);
+        separadorMenu.setTopComponent(taulerUsuari);
 
-                case "Juga":
-                    //posar cartes Usuari abaix i cont usuari = 13;
-                    //posar cartes blaves i cont = 13 a jugIA;
-                    //cambiar menu a pausa i reinicia
-                    //cambiar text
-                    //cridar metode jugarPartida:
-                    //jugador pot pitjar carta per colocar (crear mètode (boolean porTocar)
-                    //cambia torn jugador a menu i aixi fins que un guanya...
-                    //repaint();
-                    break;
-                case "Reinicia":
-                    //torna a començar tot
-                    break;
-            }
+        GridBagConstraints restricciones = new GridBagConstraints();
+
+        restricciones.fill = GridBagConstraints.HORIZONTAL;
+        restricciones.anchor = GridBagConstraints.PAGE_END;
+        restricciones.insets = new Insets(0, 8, 0, 0);
+        restricciones.gridx = 0;
+        restricciones.gridy = 1;
+        restricciones.ipady = 5;
+        restricciones.ipadx = 0;
+        restricciones.weightx = 0.1;
+        restricciones.weighty = 0;
+
+        taulerUsuari.add(c[0].carta, restricciones);
+
+        for (int i = 1; i < 13; i++) {
+            restricciones.gridx = restricciones.gridx + 1;
+            taulerUsuari.add(c[i].carta, restricciones);
         }
-    };
 
-    private void inici() {
+        JTextArea auxx = new JTextArea(String.valueOf(cartesRestants));
+        auxx.setLayout(new FlowLayout(FlowLayout.CENTER));
+        auxx.setForeground(Color.WHITE);
+        auxx.setFont(new Font("Arial", Font.PLAIN, 35));
+        auxx.setOpaque(false);
+        auxx.setEditable(false);
+
+        restricciones.fill = GridBagConstraints.HORIZONTAL;
+        restricciones.gridx = 0;
+        restricciones.gridy = 0;
+        restricciones.ipady = 0;
+        restricciones.ipadx = 0;
+        restricciones.weighty = 1.0;
+        restricciones.insets = new Insets(0, 28, 0, 0);
+        restricciones.gridwidth = 2;
+        taulerUsuari.add(auxx, restricciones);
+        contenedor.repaint();
+    }
+
+    private void iniciJoc() {
         acabat = false;
-        Baralla bar = new Baralla();
-        System.out.println("BARALLA FORA MESCLAR: ");
-        System.out.println(bar.toString() + "\n");
-        bar.mescla();
-        for (int i = 0; i < 4; i++) {
-            jugadors[i] = new Jugador(i + 1);
+        actualitzarTauler(tauler.tauler);
+        for (int i = 0; i < numCartes; i++) {
+            jugadorUsuari.asignarCarta(baralla.agafaCarta());
+        }
+        cartesUsuari = jugadorUsuari.getArrayCartasAsignadas();
+        actualitzarMaJugadorUsuari(jugadorUsuari.getNumCartas(), cartesUsuari);
+        for (int i = 0; i < 3; i++) {
             for (int k = 0; k < numCartes; k++) {
-                repartirCarta(jugadors[i], bar);
+                jugadorsIA[i].asignarCarta(baralla.agafaCarta());
             }
+            actualitzarMaJugadorIA(jugadorsIA[i].getNumCartas(), "card_back_blue",
+                    cartesJugadorIA[i]);
         }
-        //imprimim els jugadors amb les cartes corresponents
-        for (int i = 0; i < 4; i++) {
-            System.out.println(jugadors[i].toString());
-        }
-        Tauler t = new Tauler();
-        System.out.println("");
-        System.out.println(t.toString());
-        System.out.println("");
-        while (!acabat) {
-            for (int k = 0; (k < 4) && !acabat; k++) {
-                jugadors[k].treureCarta(t);
-                if (jugadors[k].getNumCartas() == 0) {
-                    acabat = true;
-                }
-                System.out.println(jugadors[k].toString());
-            }
-            System.out.println(t.toString());
-        }
+        contenedor.repaint();
+        actualitzarText(
+                "Les cartes estàn repartides, és el teu torn, posa un 7 si el tens");
     }
 
-    private void repartirCarta(Jugador jug, Baralla bara) {
-        try {
-            jug.asignarCarta(bara.agafaCarta());
-        } catch (Baralla.NohihaCartes ex) {
-            System.out.println("NO HAY MÁS CARTAS");
+    private void mostrarMenuCorresponent(JButton jb1, JButton jb2) {
+        menuBotons.removeAll();
+        menuBotons = new JPanel();
+        menuBotons.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 3));
+        if (jb2 != null) {
+            menuBotons.add(jb1);
+            menuBotons.add(jb2);
+        } else {
+            menuBotons.add(jb1);
         }
+        menuBotons.add(reinicia);
+        menuTotal.removeAll();
+        menuTotal.add(menuBotons);
+        menuTotal.add(texteMissatge);
+        separadorMenu.setBottomComponent(menuTotal);
+        contenedor.repaint();
     }
-
 }

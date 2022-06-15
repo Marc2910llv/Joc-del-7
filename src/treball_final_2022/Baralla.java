@@ -19,13 +19,12 @@ public class Baralla {
     private final Carta[] b;
     private int n; // Nombre de cartes de la baralla
 
-    public static class NohihaCartes extends Exception {
-
-        public NohihaCartes(String e) {
-            super(e);
-        }
-    }
-
+//    public static class NohihaCartes extends Exception {
+//
+//        public NohihaCartes(String e) {
+//            super(e);
+//        }
+//    }
     // CONSTRUCTOR
     public Baralla() {
         b = new Carta[MAXCARTES];
@@ -61,9 +60,9 @@ public class Baralla {
         }
     }
 
-    public Carta agafaCarta() throws NohihaCartes {
+    public Carta agafaCarta() {
         if (n == 0) {
-            throw new NohihaCartes("No hi ha cartes a la baralla, no se'n poden donar més");
+            return null;
         }
         Carta c = b[n - 1];
         n--;
@@ -74,4 +73,7 @@ public class Baralla {
         return n;
     }
 
+    public Carta[] getB() {
+        return b;
+    }
 }

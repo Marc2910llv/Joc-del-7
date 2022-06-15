@@ -14,12 +14,10 @@ import java.util.ArrayList;
 public class Jugador {
 
     //ATRIBUTOS
-    private int nombre;
     public final ArrayList<Carta> cartasAsignadas;
 
     //CONSTRUCTOR
-    public Jugador(int nombre) {
-        this.nombre = nombre;
+    public Jugador() {
         cartasAsignadas = new ArrayList<>();
     }
 
@@ -31,23 +29,28 @@ public class Jugador {
         return cartasAsignadas.size();
     }
 
-    public int getNombre() {
-        return nombre;
+    public Carta[] getArrayCartasAsignadas() {
+        Carta[] aux = new Carta[cartasAsignadas.size()];
+        for (int i = 0; i < aux.length; i++) {
+            aux[i] = cartasAsignadas.get(i);
+        }
+        return aux;
     }
 
-    public void treureCarta(Tauler taula) {
-        boolean sacado = false;
-        for (int i = 0; i < cartasAsignadas.size() && !sacado; i++) {
+    public Carta treureCarta(Tauler taula) {
+        for (int i = 0; i < cartasAsignadas.size(); i++) {
             if (taula.colocarCarta(cartasAsignadas.get(i))) {
+                Carta c = cartasAsignadas.get(i);
                 cartasAsignadas.remove(i);
-                sacado = true;
+                return c;
             }
         }
+        return null;
     }
 
     @Override
     public String toString() {
-        String s = "Jug " + nombre + ": ";
+        String s = "";
         for (int i = 0; i < cartasAsignadas.size(); i++) {
             s += cartasAsignadas.get(i).toString() + " ";
 
