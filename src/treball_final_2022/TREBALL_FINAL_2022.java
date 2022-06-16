@@ -33,6 +33,7 @@ import javax.swing.JTextArea;
 /**
  *
  * @author Carlos Lozano, Marc Llobera
+ * Video: https://youtu.be/snmbwsmNoxY
  */
 public class TREBALL_FINAL_2022 extends JFrame {
 
