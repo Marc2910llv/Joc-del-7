@@ -12,7 +12,7 @@ import javax.swing.border.Border;
 
 /**
  *
- * @author carlo
+ * @author Carlos Lozano, Marc Llobera
  */
 public class RoundedBorder implements Border {
 
