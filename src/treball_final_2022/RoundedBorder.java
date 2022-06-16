@@ -16,6 +16,7 @@ import javax.swing.border.Border;
  */
 public class RoundedBorder implements Border {
 
+    //MÈTODE PER FER ELS BOTONS DEL MENÚ REDONS
     private final int radius;
 
     RoundedBorder(int radius) {

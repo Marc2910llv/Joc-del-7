@@ -13,18 +13,13 @@ import java.util.Random;
  */
 public class Baralla {
 
+    //ATRIBUTS
     public static final int MAXCARTESPERPAL = 13;
     public static final int MAXCARTES = MAXCARTESPERPAL * 4; // 52 Nombre màxim de cartes 13 cartes * 4 Pals
 
     private final Carta[] b;
     private int n; // Nombre de cartes de la baralla
 
-//    public static class NohihaCartes extends Exception {
-//
-//        public NohihaCartes(String e) {
-//            super(e);
-//        }
-//    }
     // CONSTRUCTOR
     public Baralla() {
         b = new Carta[MAXCARTES];
@@ -36,18 +31,6 @@ public class Baralla {
                 index++;
             }
         }
-    }
-
-    @Override
-    public String toString() {
-        String s = "";
-        for (int i = 0; i < n; i++) {
-            s += b[i].toString() + " ";
-            if (i == 11 || i == 23 || i == 35) {
-                s += "\n";
-            }
-        }
-        return s;
     }
 
     public void mescla() {//Fisher-Yates

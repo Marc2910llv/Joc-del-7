@@ -74,22 +74,4 @@ public class Tauler {
         }
         return false;
     }
-
-    @Override
-    public String toString() {
-        String s = "";
-        for (int n = 0; n < files; n++) {
-            s += Pal.values()[n];
-            for (int m = 0; m < columnes; m++) {
-                if (taulerCartes[n][m].getPal() != null) {
-                    s += "[     ]";
-                } else {
-                    s += taulerCartes[n][m].toString();
-                }
-            }
-            s += "\n";
-        }
-        return s;
-    }
-
 }

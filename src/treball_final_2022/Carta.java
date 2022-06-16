@@ -41,6 +41,7 @@ public class Carta extends JLabel {
         }
     }
 
+    //CONSTRUCTOR CARTA BUIDA
     public Carta(boolean visible) {
         this.pal = null;
         this.num = 0;

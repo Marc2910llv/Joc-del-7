@@ -46,9 +46,12 @@ public class TREBALL_FINAL_2022 extends JFrame {
     private JButton mescla, juga, reinicia, passa, tornJugador;
     private final JPanel menuTotal = new JPanel();
     private final JTextArea texteMissatge = new JTextArea();
-    private final JSplitPane separadorIA = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-    private final JSplitPane separadorTablero = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-    private final JSplitPane separadorMenu = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    private final JSplitPane separadorIA
+            = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    private final JSplitPane separadorTablero
+            = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    private final JSplitPane separadorMenu
+            = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
     //ATRIBUTS JOC
     private final Jugador[] jugadorsIA = new Jugador[3];
@@ -117,35 +120,38 @@ public class TREBALL_FINAL_2022 extends JFrame {
         /*----------------------------------------------------------------------
         --MENU INFERIOR
         ----------------------------------------------------------------------*/
-
- /*-----------------------------------------------------------------------------
-        --GESTIÓ D'EVENTS
-        ----------------------------------------------------------------------*/
+        ////////////////////GESTIÓ D'EVENTS DELS BOTONS/////////////////////////
         ActionListener gestorEventos = (ActionEvent evento) -> {
             switch (evento.getActionCommand()) {
                 case "Mescla": {
+                    //mostram el tauler amb cartes mesclades
                     mostrarTaulerMesclat(true);
-                    juga.setEnabled(true);
-                    reinicia.setEnabled(true);
+                    juga.setEnabled(true);//activam botó Jugar
+                    reinicia.setEnabled(true);//activam botó Reiniciar
                     break;
                 }
                 case "Juga": {
-                    tauler = new Tauler();
-                    iniciJoc();
+                    iniciJoc();//cridam per iniciar el joc
+                    //cambiam els botons del menú
                     mostrarMenuCorresponent(passa, null);
                     break;
                 }
                 case "Reinicia": {
+                    //reiniciam les variables del joc per tornar a començar
                     jugadorsIA[0] = new Jugador();
                     jugadorsIA[1] = new Jugador();
                     jugadorsIA[2] = new Jugador();
                     jugadorUsuari = new Jugador();
-                    actualitzarMaJugadorIA(0, "fondo_casella", panelCartesRestantsIA[0]);
-                    actualitzarMaJugadorIA(0, "fondo_casella", panelCartesRestantsIA[1]);
-                    actualitzarMaJugadorIA(0, "fondo_casella", panelCartesRestantsIA[2]);
+                    actualitzarMaJugadorIA(0, "fondo_casella",
+                            panelCartesRestantsIA[0]);
+                    actualitzarMaJugadorIA(0, "fondo_casella",
+                            panelCartesRestantsIA[1]);
+                    actualitzarMaJugadorIA(0, "fondo_casella",
+                            panelCartesRestantsIA[2]);
                     tauler = new Tauler();
                     baralla = new Baralla();
-                    mostrarTaulerMesclat(false);//mostram el tauler sense mesclar
+                    //mostram el tauler sense mesclar
+                    mostrarTaulerMesclat(false);
                     cartesUsuari[0] = new Carta(true);
                     for (int i = 1; i < cartesUsuari.length; i++) {
                         cartesUsuari[i] = new Carta(false);
@@ -157,33 +163,41 @@ public class TREBALL_FINAL_2022 extends JFrame {
                     passa.setEnabled(true);
                     tornJugador.setEnabled(true);
                     mostrarMenuCorresponent(mescla, juga);
-                    texteMissatge.setText("Abans de jugar cal mesclar la baralla");
+                    texteMissatge
+                            .setText("Abans de jugar cal mesclar la baralla");
                     break;
                 }
                 case "Passa": {
-                    torn = 0;
+                    torn = 0;//quan passam comença el primer jugadorIA
                     actualitzarText("Has passat");
+                    //cambiam els botons del menú
                     mostrarMenuCorresponent(tornJugador, null);
                     break;
                 }
                 case "Torn Jugador": {
+                    //treim una carta del jugadorIA corresponent
                     Carta posada = jugadorsIA[torn].treureCarta(tauler);
                     actualitzarMaJugadorIA(jugadorsIA[torn].getNumCartas(),
                             "card_back_blue", panelCartesRestantsIA[torn]);
                     if (jugadorsIA[torn].getNumCartas() == 0) {
+                        //Si el jugador es queda sense cartes acabe el joc
                         acabat = true;
                     }
                     torn++;
                     if (posada != null) {
-                        actualitzarText("El Jugador " + torn + " ha posat el " + posada.toString());
+                        actualitzarText("El Jugador " + torn + " ha posat el "
+                                + posada.toString());
                     } else {
                         actualitzarText("El Jugador" + torn + " passa");
                     }
+                    //Si es el torn del usuari cambiam botons del menu
                     if (torn == 3) {
                         mostrarMenuCorresponent(passa, null);
                     }
+                    //actualitzam el tauler de la interfície amb les cartes del
+                    //tauler del joc
                     actualitzarTauler(tauler.taulerCartes);
-                    if (acabat) {
+                    if (acabat) {//acabam la partida
                         partidaAcabada(false, torn - 1);
                         torn = 3;
                         tornJugador.setEnabled(false);
@@ -194,6 +208,7 @@ public class TREBALL_FINAL_2022 extends JFrame {
             }
         };
 
+        //BOTONS
         menuBotons = new JPanel();
 
         mescla = new JButton("Mescla");
@@ -220,6 +235,7 @@ public class TREBALL_FINAL_2022 extends JFrame {
 
         mostrarMenuCorresponent(mescla, juga);
 
+        //MISSATGE INFERIOR
         texteMissatge.setFocusable(false);
         actualitzarText("Abans de jugar cal mesclar la baralla");
 
@@ -259,59 +275,19 @@ public class TREBALL_FINAL_2022 extends JFrame {
         setVisible(true);
     }
 
-    /*----------------------------------------------------------------------
-        --MÈTODES
-        ----------------------------------------------------------------------*/
-    private void actualitzarText(String a) {
-        texteMissatge.setText(a);
-        contenedor.repaint();
-    }
-
-    private void actualitzarTauler(Carta[][] c) {
-        taulerBaralla.removeAll();
-        separadorIA.setBottomComponent(taulerBaralla);
-        separadorTablero.setTopComponent(taulerBaralla);
-
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 13; j++) {
-                if (c[i][j] == null) {
-                    taulerBaralla.add(new CasillaCarta());
-                } else {
-                    taulerBaralla.add(new CasillaCarta(c[i][j].carta));
-                }
-            }
-        }
-
-        contenedor.repaint();
-    }
-
-    private void mostrarTaulerMesclat(boolean mezclado) {
-        taulerBaralla.removeAll();
-        separadorIA.setBottomComponent(taulerBaralla);
-        separadorTablero.setTopComponent(taulerBaralla);
-        if (mezclado) {
-            baralla.mescla();
-            Carta[] cartesBaralla = baralla.getB();
-            int index = 0;
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 13; j++) {
-                    taulerBaralla.add(new CasillaCarta(cartesBaralla[index].carta));
-                    index++;
-                }
-            }
-            actualitzarText("La baralla està mesclada");
-        } else {
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 13; j++) {
-                    taulerBaralla.add(new CasillaCarta(new Carta(Pal.values()[i],
-                            j + 1).carta));
-                }
-            }
-        }
-        contenedor.repaint();
-    }
-
-    private void actualitzarMaJugadorIA(int cartesRestants, String x, JLabel aux) {
+    /*--------------------------------------------------------------------------
+    --MÈTODES
+    --------------------------------------------------------------------------*/
+    /**
+     * Actualitzam el panell del jugador IA corresponent amb les cartes restants
+     * i la imatge a mostrar
+     *
+     * @param cartesRestants ncartes restants que es mostrará al panell
+     * @param x nom del arxiu imatge que es mostrarà
+     * @param aux panell del Jugador IA que es modifica
+     */
+    private void actualitzarMaJugadorIA(int cartesRestants, String x,
+            JLabel aux) {
         aux.removeAll();
         try {
             BufferedImage bufferedImage = ImageIO.read(new File("Cartes/" + x
@@ -323,7 +299,8 @@ public class TREBALL_FINAL_2022 extends JFrame {
                 aux.setIcon(new ImageIcon(imatge));
             }
             aux.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
-            JTextArea text_Jugador = new JTextArea(String.valueOf(cartesRestants));
+            JTextArea text_Jugador
+                    = new JTextArea(String.valueOf(cartesRestants));
             text_Jugador.setForeground(Color.WHITE);
             text_Jugador.setFont(new Font("Arial", Font.CENTER_BASELINE, 55));
             text_Jugador.setOpaque(false);
@@ -336,6 +313,12 @@ public class TREBALL_FINAL_2022 extends JFrame {
         contenedor.repaint();
     }
 
+    /**
+     * Actualitzam el panell del jugador Usuari corresponent amb les cartes
+     * restants i totes les cartes que té en aquell moment
+     *
+     * @param cartesRestants ncartes restants que es mostrarà al panell
+     */
     private void actualitzarMaJugadorUsuari(int cartesRestants) {
         taulerUsuari.removeAll();
         separadorTablero.setBottomComponent(taulerUsuari);
@@ -387,19 +370,81 @@ public class TREBALL_FINAL_2022 extends JFrame {
         contenedor.repaint();
     }
 
+    /**
+     * Actualitzam el tauler mostrant les cartes o ordenades o mesclades
+     *
+     * @param mezclado indica si es mostrarà el tauler amb les carten en ordre o
+     * es mesclarà la baralla
+     */
+    private void mostrarTaulerMesclat(boolean mezclado) {
+        taulerBaralla.removeAll();
+        separadorIA.setBottomComponent(taulerBaralla);
+        separadorTablero.setTopComponent(taulerBaralla);
+        if (mezclado) {
+            baralla.mescla();
+            Carta[] cartesBaralla = baralla.getB();
+            int index = 0;
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 13; j++) {
+                    taulerBaralla.add(
+                            new CasillaCarta(cartesBaralla[index].carta));
+                    index++;
+                }
+            }
+            actualitzarText("La baralla està mesclada");
+        } else {
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 13; j++) {
+                    taulerBaralla.add(new CasillaCarta(
+                            new Carta(Pal.values()[i], j + 1).carta));
+                }
+            }
+        }
+        contenedor.repaint();
+    }
+
+    /**
+     * Actualitzam el tauler mostrant les cartes que ha de tenir en aquell
+     * moment
+     *
+     * @param c matriu de les cartes que es mostren al tauler
+     */
+    private void actualitzarTauler(Carta[][] c) {
+        taulerBaralla.removeAll();
+        separadorIA.setBottomComponent(taulerBaralla);
+        separadorTablero.setTopComponent(taulerBaralla);
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 13; j++) {
+                if (c[i][j] == null) {
+                    taulerBaralla.add(new CasillaCarta());
+                } else {
+                    taulerBaralla.add(new CasillaCarta(c[i][j].carta));
+                }
+            }
+        }
+
+        contenedor.repaint();
+    }
+
+    /**
+     * Mètode que inicialitza el joc repartint les cartes a cada jugador
+     */
     private void iniciJoc() {
         acabat = false;
         actualitzarTauler(tauler.taulerCartes);
         for (int i = 0; i < Baralla.MAXCARTES / 4; i++) {
             Carta aux = baralla.agafaCarta();
 
+            //Listener del ratolí per les cartes d'Usuari
             aux.carta.addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (torn == 3 && !acabat) {
                         if (tauler.colocarCarta(aux)) {
                             jugadorUsuari.eliminarCarta(aux);
-                            actualitzarMaJugadorUsuari(jugadorUsuari.getNumCartas());
+                            actualitzarMaJugadorUsuari(jugadorUsuari
+                                    .getNumCartas());
                             if (jugadorUsuari.getNumCartas() == 0) {
                                 acabat = true;
                             }
@@ -447,14 +492,20 @@ public class TREBALL_FINAL_2022 extends JFrame {
             for (int k = 0; k < Baralla.MAXCARTES / 4; k++) {
                 jugadorsIA[i].asignarCarta(baralla.agafaCarta());
             }
-            actualitzarMaJugadorIA(jugadorsIA[i].getNumCartas(), "card_back_blue",
-                    panelCartesRestantsIA[i]);
+            actualitzarMaJugadorIA(jugadorsIA[i].getNumCartas(),
+                    "card_back_blue", panelCartesRestantsIA[i]);
         }
         contenedor.repaint();
-        actualitzarText(
-                "Les cartes estàn repartides, és el teu torn, posa un 7 si el tens");
+        actualitzarText("Les cartes estàn repartides,"
+                + " és el teu torn, posa un 7 si el tens");
     }
 
+    /**
+     * Actualitzam el menu de botons amb els botons pasats per perámetre
+     *
+     * @param jb1 primer botó que es mostrarà sempre
+     * @param jb2 segon botó que es mostrarà o no depenent de si es null o no
+     */
     private void mostrarMenuCorresponent(JButton jb1, JButton jb2) {
         menuBotons.removeAll();
         menuBotons = new JPanel();
@@ -473,6 +524,14 @@ public class TREBALL_FINAL_2022 extends JFrame {
         contenedor.repaint();
     }
 
+    /**
+     * Mètode per quan acaba la partida mostrar el missatge corresponent per
+     * pantalla
+     *
+     * @param guanyat indicam si l'usuari ha guanyat o no
+     * @param nJugador jugador que ha guanyat la partida per seleccionar la
+     * imatge a mostrar
+     */
     public void partidaAcabada(boolean guanyat, int nJugador) {
         if (guanyat) {
             BufferedImage bufferedImage;
@@ -488,7 +547,8 @@ public class TREBALL_FINAL_2022 extends JFrame {
             }
             JOptionPane.showMessageDialog(
                     null,
-                    new JLabel("HAS GUANYAT!!!", new ImageIcon(imatge), JLabel.LEFT),
+                    new JLabel("HAS GUANYAT!!!", new ImageIcon(imatge),
+                            JLabel.LEFT),
                     "Uep!", JOptionPane.INFORMATION_MESSAGE);
         } else {
             BufferedImage bufferedImage;
@@ -504,9 +564,20 @@ public class TREBALL_FINAL_2022 extends JFrame {
             }
             JOptionPane.showMessageDialog(
                     null,
-                    new JLabel("HAS PERDUT", new ImageIcon(imatge), JLabel.LEFT),
-                    "Ups!", JOptionPane.INFORMATION_MESSAGE);
+                    new JLabel("HAS PERDUT", new ImageIcon(imatge),
+                            JLabel.LEFT), "Ups!",
+                    JOptionPane.INFORMATION_MESSAGE);
         }
         actualitzarText("Simulació acabada");
+    }
+
+    /**
+     * Mètode per actualitzar el missatge informatiu inferior
+     *
+     * @param a missatge que es mostrarà
+     */
+    private void actualitzarText(String a) {
+        texteMissatge.setText(a);
+        contenedor.repaint();
     }
 }

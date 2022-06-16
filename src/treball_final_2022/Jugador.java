@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class Jugador {
 
-    //ATRIBUTOS
+    //ATRIBUTS
     public final ArrayList<Carta> cartasAsignadas;
 
     //CONSTRUCTOR
@@ -46,15 +46,5 @@ public class Jugador {
             }
         }
         return null;
-    }
-
-    @Override
-    public String toString() {
-        String s = "";
-        for (int i = 0; i < cartasAsignadas.size(); i++) {
-            s += cartasAsignadas.get(i).toString() + " ";
-
-        }
-        return s;
     }
 }

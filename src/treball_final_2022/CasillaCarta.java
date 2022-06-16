@@ -15,6 +15,8 @@ import javax.swing.JLabel;
  */
 public class CasillaCarta extends JLabel {
 
+    //CLASSE PER LES CASELLES INFERIORS DE LES CARTES DEL TAULER
+    //CONSTRUCTORS
     public CasillaCarta() {
         setBorder(javax.swing.BorderFactory.createLineBorder((new Color(0, 110, 0)), 2));
         setLayout(new FlowLayout(FlowLayout.CENTER, 2, 7));
@@ -29,28 +31,4 @@ public class CasillaCarta extends JLabel {
         setOpaque(true);
         add(component);
     }
-
 }
-//    Carta[][] Tauler;
-//
-//    public CasillaCarta() {
-//        Tauler = new Carta[4][13];
-//    }
-//
-//    public Carta[][] crearTablero() {
-//
-//        for (int i = 0; i < 4; i++) {
-//            for (int j = 0; j < 13; j++) {
-//                Tauler[i][j].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(0, 0, 0)));
-//                Tauler[i][j].setLayout(new FlowLayout(FlowLayout.CENTER, 0, 5));
-//                Tauler[i][j].setBackground(new Color(0, 82, 0));
-//                Tauler[i][j].setOpaque(true);
-//            }
-//        }
-//        return Tauler;
-//    }
-//
-//    public void introducirCarta(Carta c, int i, int j) {
-//        Tauler[i][j] = c;
-//    }
-
