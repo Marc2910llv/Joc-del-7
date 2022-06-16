@@ -12,6 +12,8 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -47,12 +49,12 @@ public class TREBALL_FINAL_2022 extends JFrame {
 
     private final Jugador[] jugadorsIA = new Jugador[3];
     private final Jugador jugadorUsuari = new Jugador();
-    private Carta[] cartesUsuari;
+    private final Carta[] cartesUsuari = new Carta[13];
     private boolean acabat;
     private final int numCartes = 13;
     public Tauler tauler;
     private Baralla baralla;
-    private int tornIA = 0;
+    private int torn = 3;//els torns van del 0 al 3(torn usuari)
 
     public static void main(String[] args) throws IOException {
         new TREBALL_FINAL_2022().interfici();
@@ -107,14 +109,13 @@ public class TREBALL_FINAL_2022 extends JFrame {
         mostrarTaulerMesclat(false);
 
         ////////////////////////////JUGADOR USUARI//////////////////////////////
-        Carta[] v = new Carta[13];
-        v[0] = new Carta(true);
-        for (int i = 1; i < v.length; i++) {
-            v[i] = new Carta(false);
+        cartesUsuari[0] = new Carta(true);
+        for (int i = 1; i < cartesUsuari.length; i++) {
+            cartesUsuari[i] = new Carta(false);
         }
         taulerUsuari.setBackground(colorTauler);
         taulerUsuari.setLayout(new GridBagLayout());
-        actualitzarMaJugadorUsuari(0, v);
+        actualitzarMaJugadorUsuari(0);
         ////////////////////////////////////////////////////////////////////////
 
         /*----------------------------------------------------------------------
@@ -148,28 +149,28 @@ public class TREBALL_FINAL_2022 extends JFrame {
                     break;
                 }
                 case "Passa": {
+                    torn = 0;
                     actualitzarText("Has passat");
                     mostrarMenuCorresponent(tornJugador, null);
                     break;
                 }
                 case "Torn Jugador": {
-                    Carta posada = jugadorsIA[tornIA].treureCarta(tauler);
-                    actualitzarMaJugadorIA(jugadorsIA[tornIA].getNumCartas(),
-                            "card_back_blue", cartesJugadorIA[tornIA]);
-                    if (jugadorsIA[tornIA].getNumCartas() == 0) {
+                    Carta posada = jugadorsIA[torn].treureCarta(tauler);
+                    actualitzarMaJugadorIA(jugadorsIA[torn].getNumCartas(),
+                            "card_back_blue", cartesJugadorIA[torn]);
+                    if (jugadorsIA[torn].getNumCartas() == 0) {
                         acabat = true;
                     }
-                    tornIA++;
+                    torn++;
                     if (posada != null) {
-                        actualitzarText("El Jugador " + tornIA + " ha posat el " + posada.toString());
+                        actualitzarText("El Jugador " + torn + " ha posat el " + posada.toString());
                     } else {
-                        actualitzarText("El Jugador" + tornIA + " passa");
+                        actualitzarText("El Jugador" + torn + " passa");
                     }
-                    if (tornIA == 3) {
-                        tornIA = 0;
+                    if (torn == 3) {
                         mostrarMenuCorresponent(passa, null);
                     }
-                    actualitzarTauler(tauler.tauler);
+                    actualitzarTauler(tauler.taulerCartes);
                     break;
                 }
 
@@ -318,10 +319,20 @@ public class TREBALL_FINAL_2022 extends JFrame {
         contenedor.repaint();
     }
 
-    private void actualitzarMaJugadorUsuari(int cartesRestants, Carta[] c) {
+    private void actualitzarMaJugadorUsuari(int cartesRestants) {
         taulerUsuari.removeAll();
         separadorTablero.setBottomComponent(taulerUsuari);
         separadorMenu.setTopComponent(taulerUsuari);
+
+        for (int i = 0; i < cartesUsuari.length; i++) {
+            if (!jugadorUsuari.getCartasAsignadas().contains(cartesUsuari[i])) {
+                if (i == 0) {
+                    cartesUsuari[i] = new Carta(true);
+                } else {
+                    cartesUsuari[i] = new Carta(false);
+                }
+            }
+        }
 
         GridBagConstraints restricciones = new GridBagConstraints();
 
@@ -335,11 +346,9 @@ public class TREBALL_FINAL_2022 extends JFrame {
         restricciones.weightx = 0.1;
         restricciones.weighty = 0;
 
-        taulerUsuari.add(c[0].carta, restricciones);
-
-        for (int i = 1; i < 13; i++) {
+        for (int i = 0; i < 13; i++) {
+            taulerUsuari.add(cartesUsuari[i].carta, restricciones);
             restricciones.gridx = restricciones.gridx + 1;
-            taulerUsuari.add(c[i].carta, restricciones);
         }
 
         JTextArea auxx = new JTextArea(String.valueOf(cartesRestants));
@@ -363,12 +372,53 @@ public class TREBALL_FINAL_2022 extends JFrame {
 
     private void iniciJoc() {
         acabat = false;
-        actualitzarTauler(tauler.tauler);
+        actualitzarTauler(tauler.taulerCartes);
         for (int i = 0; i < numCartes; i++) {
-            jugadorUsuari.asignarCarta(baralla.agafaCarta());
+            Carta aux = baralla.agafaCarta();
+
+            aux.carta.addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (torn == 3) {
+                        if (tauler.colocarCarta(aux)) {
+                            jugadorUsuari.eliminarCarta(aux);
+                            actualitzarMaJugadorUsuari(jugadorUsuari.getNumCartas());
+                            if (jugadorUsuari.getNumCartas() == 0) {
+                                acabat = true;
+                            }
+                            actualitzarText("Has posat el " + aux.toString());
+                            torn++;
+                            if (torn == 4) {
+                                torn = 0;
+                                mostrarMenuCorresponent(tornJugador, null);
+                            }
+                            actualitzarTauler(tauler.taulerCartes);
+                        }
+                    }
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                }
+            });
+
+            jugadorUsuari.asignarCarta(aux);
+            cartesUsuari[i] = aux;
         }
-        cartesUsuari = jugadorUsuari.getArrayCartasAsignadas();
-        actualitzarMaJugadorUsuari(jugadorUsuari.getNumCartas(), cartesUsuari);
+
+        actualitzarMaJugadorUsuari(jugadorUsuari.getNumCartas());
         for (int i = 0; i < 3; i++) {
             for (int k = 0; k < numCartes; k++) {
                 jugadorsIA[i].asignarCarta(baralla.agafaCarta());

@@ -25,16 +25,16 @@ public class Jugador {
         cartasAsignadas.add(carta);
     }
 
+    public void eliminarCarta(Carta carta) {
+        cartasAsignadas.remove(carta);
+    }
+
     public int getNumCartas() {
         return cartasAsignadas.size();
     }
 
-    public Carta[] getArrayCartasAsignadas() {
-        Carta[] aux = new Carta[cartasAsignadas.size()];
-        for (int i = 0; i < aux.length; i++) {
-            aux[i] = cartasAsignadas.get(i);
-        }
-        return aux;
+    public ArrayList<Carta> getCartasAsignadas() {
+        return cartasAsignadas;
     }
 
     public Carta treureCarta(Tauler taula) {

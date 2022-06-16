@@ -12,13 +12,13 @@ package treball_final_2022;
 public class Tauler {
 
     //ATRIBUTS
-    public final Carta[][] tauler;
+    public final Carta[][] taulerCartes;
     private final int files = 4;
     private final int columnes = 13;
 
     //CONSTRUCTOR
     public Tauler() {
-        tauler = new Carta[files][columnes];
+        taulerCartes = new Carta[files][columnes];
     }
 
     public boolean colocarCarta(Carta carta) {
@@ -40,35 +40,35 @@ public class Tauler {
         columna = carta.getNum() - 1;
 
         if (carta.getNum() == 7) {
-            tauler[fila][columna] = carta;
+            taulerCartes[fila][columna] = carta;
             return true;
         }
         if (columna == 0) {
-            if (tauler[fila][columna + 1] != null) {
-                if (tauler[fila][columna + 1].getNum() == 2) {
-                    tauler[fila][columna] = carta;
+            if (taulerCartes[fila][columna + 1] != null) {
+                if (taulerCartes[fila][columna + 1].getNum() == 2) {
+                    taulerCartes[fila][columna] = carta;
                     return true;
                 }
             }
             return false;
         }
         if (columna == 12) {
-            if (tauler[fila][columna - 1] != null) {
-                if (tauler[fila][columna - 1].getNum() == 12) {
-                    tauler[fila][columna] = carta;
+            if (taulerCartes[fila][columna - 1] != null) {
+                if (taulerCartes[fila][columna - 1].getNum() == 12) {
+                    taulerCartes[fila][columna] = carta;
                     return true;
                 }
             }
             return false;
         }
-        if (tauler[fila][columna - 1] != null) {
-            if (tauler[fila][columna - 1].getNum() < carta.getNum()) {
-                tauler[fila][columna] = carta;
+        if (taulerCartes[fila][columna - 1] != null) {
+            if (taulerCartes[fila][columna - 1].getNum() < carta.getNum()) {
+                taulerCartes[fila][columna] = carta;
                 return true;
             }
-        } else if (tauler[fila][columna + 1] != null) {
-            if (tauler[fila][columna + 1].getNum() > carta.getNum()) {
-                tauler[fila][columna] = carta;
+        } else if (taulerCartes[fila][columna + 1] != null) {
+            if (taulerCartes[fila][columna + 1].getNum() > carta.getNum()) {
+                taulerCartes[fila][columna] = carta;
                 return true;
             }
         }
@@ -81,10 +81,10 @@ public class Tauler {
         for (int n = 0; n < files; n++) {
             s += Pal.values()[n];
             for (int m = 0; m < columnes; m++) {
-                if (tauler[n][m].getPal() != null) {
+                if (taulerCartes[n][m].getPal() != null) {
                     s += "[     ]";
                 } else {
-                    s += tauler[n][m].toString();
+                    s += taulerCartes[n][m].toString();
                 }
             }
             s += "\n";

@@ -22,7 +22,7 @@ public class Carta extends JLabel {
 
     private final Pal pal;
     private final int num;
-    JLabel carta;
+    public JLabel carta;
     public static final int[] tamanyCartes = {62, 80};
 
     // CONSTRUCTOR
